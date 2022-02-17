@@ -1,0 +1,32 @@
+#pragma once
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
+#include <iostream>
+#include <string>
+
+#include "vector.hpp"
+
+class Window
+{
+public:
+    Window(const char* title, const int width, const int height);
+    void destroy();
+
+    void display();
+    void clear();
+
+    SDL_Texture* loadImage(const char* path);
+    void render(SDL_Texture* image, SDL_Rect& dest);
+    void render(SDL_Texture* image, SDL_Rect& src, SDL_Rect& dest);
+    void drawRect(SDL_Rect& action);
+
+    void drawTexOnTex(SDL_Texture* image, SDL_Texture* drawOn, const Vect<float>& renderPos);
+
+private:
+    SDL_Window* window;
+    SDL_Renderer* renderer;
+
+    void error(std::string error);
+};
