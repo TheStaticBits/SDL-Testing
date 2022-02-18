@@ -11,13 +11,14 @@
 #include "entity.hpp"
 #include "vector.hpp"
 #include "window.hpp"
+#include "world.hpp"
 
 class Player : public Entity
 {
 public:
     Player(Window& window) : Entity(window.loadImage(PLAYER_PATH), 0, 0) {}
 
-    void update(std::unordered_map<SDL_Keycode, bool>& keys, std::vector<Entity>& platforms);
+    void update(std::unordered_map<SDL_Keycode, bool>& keys, World& world);
 
 private:
     const float gravity = 0.2f;

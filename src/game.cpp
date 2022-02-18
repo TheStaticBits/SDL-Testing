@@ -12,16 +12,11 @@
 #include "constants.hpp"
 
 Game::Game()
-    : window("HELLO", WINDOW_WIDTH, WINDOW_HEIGHT), player(window), platformTex(window.loadImage(PLATFORM_PATH))
+    : window("HELLO", WINDOW_WIDTH, WINDOW_HEIGHT), player(window), world(window.loadImage(PLATFORM_PATH))
 {
     // Sets the allowed keys to false
     for (SDL_Keycode key : allowedKeys)
         keys[key] = false;
-    
-    // Creating testing platforms
-    platforms.push_back(Entity(platformTex, 0, 100));
-    platforms.push_back(Entity(platformTex, 150, 150));
-    platforms.push_back(Entity(platformTex, 300, 200));
 }
 
 bool Game::initSDL() const
@@ -56,6 +51,7 @@ void Game::quit()
 {
     player.destroy();
     window.destroy();
+    world.destroy();
 
     for (Entity& entity : platforms)
         entity.destroy();
@@ -84,13 +80,11 @@ void Game::getInputs()
 
 void Game::update()
 {
-    player.update(keys, platforms);
+    player.update(keys, world);
 }
 
 void Game::render()
 {
     player.render(window);
-
-    for (Entity& platform : platforms)
-        platform.render(window);
+    world.render(window);
 }

@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "window.hpp"
+#include "world.hpp"
 #include "player.hpp"
 
 const std::vector<SDL_Keycode> allowedKeys = {
@@ -36,7 +37,7 @@ private:
 
     Window window;
     Player player;
-    SDL_Texture* platformTex;
+    World world;
     std::vector<Entity> platforms;
 
     const int windowHeight = 600;

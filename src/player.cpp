@@ -12,7 +12,7 @@
 #include "constants.hpp"
 #include "vector.hpp"
 
-void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::vector<Entity>& platforms)
+void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
 {
     // Applying movement
     velocity.x = (keys[SDLK_RIGHT] - keys[SDLK_LEFT]);
@@ -20,14 +20,16 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::vector<Ent
     velocity.y += gravity;
 
     // Applying velocity
-    Vect<int> collisions = moveCheck(platforms);
+    Vect<int> collisions = moveCheck(world.getPlatforms());
 
     // Collided with a platform below
     if (collisions.y == 1)
     {
-        // Applying jump or resetting velocity
-        if (keys[SDLK_UP]) velocity.y = -5;
-        else velocity.y = 0;
+        // // Applying jump or resetting velocity
+        // if (keys[SDLK_UP]) velocity.y = -5;
+        // else velocity.y = 0;
+
+        velocity.y = -5;
         
         if (pos.y >= WINDOW_HEIGHT - frame.h)
             pos.y = WINDOW_HEIGHT - frame.h;
@@ -83,9 +85,7 @@ Vect<int> Player::moveCheck(std::vector<Entity>& platforms)
             }
             else
             {
-                int y = platforms[collided].getPos().y;
-                pos.y = y - frame.h;
-
+                pos.y = platforms[collided].getPos().y - frame.h;
                 collisions.y = 1;
             }
         }

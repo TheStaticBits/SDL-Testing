@@ -28,6 +28,6 @@ void Entity::destroy()
 
 void Entity::render(Window& window)
 {
-    SDL_Rect dest = { (int)std::round(pos.x), (int)std::round(pos.y), frame.w, frame.h};
+    SDL_Rect dest = { (int)std::round(pos.x), (int)std::round(pos.y), frame.w, frame.h };
     window.render(texture, dest);
 }
