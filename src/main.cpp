@@ -17,8 +17,5 @@ int main(int argc, char* argv[])
 
     game.run();
 
-    std::cout << "Press ENTER to close..." << std::endl;
-    std::getchar();
-
     return 0;
 }

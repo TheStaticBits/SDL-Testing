@@ -15,7 +15,20 @@
 void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
 {
     // Applying movement
-    velocity.x = (keys[SDLK_RIGHT] - keys[SDLK_LEFT]);
+    if (keys[SDLK_LEFT])
+        velocity.x -= speed;
+    else if (keys[SDLK_RIGHT])
+        velocity.x += speed;
+    else
+    {
+        if (velocity.x > 0)
+            velocity.x -= speed;
+        else if (velocity.x < 0)
+            velocity.x += speed;
+    }
+    
+    velocity.x = util::lock(velocity.x, -maxSpeed, maxSpeed);
+    
     // Applying gravity
     velocity.y += gravity;
 
@@ -27,18 +40,11 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
 
     // Collided with a platform below
     if (collisions.y == 1)
-    {
-        // // Applying jump or resetting velocity
-        // if (keys[SDLK_UP]) velocity.y = -5;
-        // else velocity.y = 0;
+        velocity.y = bounceVel; // bounce
 
-        velocity.y = -5; // bounce
-    }
-    // Collided with a platform above
     else if (collisions.y == -1)
-    {
+        // Collided with a platform above
         velocity.y = 0;
-    }
 }
 
 Vect<int> Player::moveCheck(World& world)
@@ -74,9 +80,7 @@ Vect<int> Player::moveCheck(World& world)
     {
         pos.y += velocity.y;
 
-        std::cout << "before" << std::endl;
         collided = checkAll(world.getPlatforms());
-        std::cout << "after" << std::endl;
 
         if (collided != -1)
         {
