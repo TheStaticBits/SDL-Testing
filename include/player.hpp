@@ -26,6 +26,6 @@ private:
 
     Vect<float> velocity;
 
-    Vect<int> moveCheck(std::vector<Entity>& platforms);
+    Vect<int> moveCheck(World& world);
     int checkAll(std::vector<Entity>& platforms);
 };

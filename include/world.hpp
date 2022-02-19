@@ -19,6 +19,7 @@ public:
     void render(Window& window);
 
     inline std::vector<Entity>& getPlatforms() { return platforms; }
+    inline void removePlatform(const int index) { platforms.erase(platforms.begin() + index); }
 
 private:
     SDL_Texture* platformTex;

@@ -20,7 +20,10 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
     velocity.y += gravity;
 
     // Applying velocity
-    Vect<int> collisions = moveCheck(world.getPlatforms());
+    Vect<int> collisions = moveCheck(world);
+    
+    if (pos.y >= WINDOW_HEIGHT - frame.h)
+        pos.y = WINDOW_HEIGHT - frame.h;
 
     // Collided with a platform below
     if (collisions.y == 1)
@@ -29,10 +32,7 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
         // if (keys[SDLK_UP]) velocity.y = -5;
         // else velocity.y = 0;
 
-        velocity.y = -5;
-        
-        if (pos.y >= WINDOW_HEIGHT - frame.h)
-            pos.y = WINDOW_HEIGHT - frame.h;
+        velocity.y = -5; // bounce
     }
     // Collided with a platform above
     else if (collisions.y == -1)
@@ -41,7 +41,7 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
     }
 }
 
-Vect<int> Player::moveCheck(std::vector<Entity>& platforms)
+Vect<int> Player::moveCheck(World& world)
 {
     Vect<int> collisions(0, 0);
     
@@ -52,18 +52,18 @@ Vect<int> Player::moveCheck(std::vector<Entity>& platforms)
     {
         pos.x += velocity.x;
 
-        collided = checkAll(platforms);
+        collided = checkAll(world.getPlatforms());
 
         if (collided != -1)
         {
-            if (velocity.x < 0)
+            if (velocity.x < 0) // Left
             {
-                pos.x = platforms[collided].getPos().x + platforms[collided].getFrame().w;
+                pos.x = world.getPlatforms()[collided].getPos().x + world.getPlatforms()[collided].getFrame().w;
                 collisions.x = -1;
             }
-            else
+            else // Right
             {
-                pos.x = platforms[collided].getPos().x - frame.w;
+                pos.x = world.getPlatforms()[collided].getPos().x - frame.w;
                 collisions.y = 1;
             }
         }
@@ -74,19 +74,22 @@ Vect<int> Player::moveCheck(std::vector<Entity>& platforms)
     {
         pos.y += velocity.y;
 
-        collided = checkAll(platforms);
+        std::cout << "before" << std::endl;
+        collided = checkAll(world.getPlatforms());
+        std::cout << "after" << std::endl;
 
         if (collided != -1)
         {
-            if (velocity.y < 0)
+            if (velocity.y < 0) // Upward
             {
-                pos.y = platforms[collided].getPos().y + platforms[collided].getFrame().h;
+                pos.y = world.getPlatforms()[collided].getPos().y + world.getPlatforms()[collided].getFrame().h;
                 collisions.y = -1;
             }
-            else
+            else // Downward
             {
-                pos.y = platforms[collided].getPos().y - frame.h;
+                pos.y = world.getPlatforms()[collided].getPos().y - frame.h;
                 collisions.y = 1;
+                world.removePlatform(collided);
             }
         }
     }
