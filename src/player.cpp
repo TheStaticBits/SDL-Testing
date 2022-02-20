@@ -25,6 +25,9 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
             velocity.x -= speed;
         else if (velocity.x < 0)
             velocity.x += speed;
+        
+        if ((0 < velocity.x && velocity.x < speed) || (0 > velocity.x && velocity.x > speed))
+            velocity.x = 0;
     }
     
     velocity.x = util::lock(velocity.x, -maxSpeed, maxSpeed);
@@ -70,7 +73,7 @@ Vect<int> Player::moveCheck(World& world)
             else // Right
             {
                 pos.x = world.getPlatforms()[collided].getPos().x - frame.w;
-                collisions.y = 1;
+                collisions.x = 1;
             }
         }
     }

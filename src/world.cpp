@@ -8,14 +8,13 @@
 
 #include "entity.hpp"
 #include "window.hpp"
+#include "constants.hpp"
+#include "utility.hpp"
 
 World::World(SDL_Texture* platformTex)
-    : platformTex(platformTex)
+    : platformSize(util::getImgSize(platformTex)), platformTex(platformTex)
 {
-    // Creating testing platforms
-    platforms.push_back(Entity(platformTex, 0, 100));
-    platforms.push_back(Entity(platformTex, 150, 150));
-    platforms.push_back(Entity(platformTex, 300, 200));
+    genLayers(10);
 }
 
 void World::destroy()
@@ -30,4 +29,16 @@ void World::render(Window& window)
 {
     for (Entity& entity : platforms)
         entity.render(window);
+}
+
+void World::genLayers(const int amount)
+{
+    for (int i = 0; i < amount; i++)
+    {
+        const int offset = (layer % 2 == 0 ? 0 : platformSize.x / 2);
+        const int layersY = layerStartY + (layer++ * platformSize.y);
+
+        for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
+            platforms.push_back(Entity(platformTex, l * platformSize.x - offset, layersY));
+    }
 }

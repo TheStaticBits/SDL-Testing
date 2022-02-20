@@ -13,16 +13,21 @@ class World
 {
 public:
     World(SDL_Texture* platformTex);
-    
     void destroy();
 
     void render(Window& window);
+
+    void genLayers(const int amount);
 
     inline std::vector<Entity>& getPlatforms() { return platforms; }
     inline void removePlatform(const int index) { platforms.erase(platforms.begin() + index); }
 
 private:
-    SDL_Texture* platformTex;
+    const int layerStartY = 100;
+    const Vect<int> platformSize;
 
+    SDL_Texture* platformTex;
     std::vector<Entity> platforms;
+
+    int layer = 0;
 };
