@@ -1,0 +1,117 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C++: Build (Debug)",
+			"command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-g",
+				"src\\*.cpp",
+				"-o",
+				"${workspaceFolder}\\bin\\debug\\application.exe",
+				"-IC:\\SDL2-w64\\include",
+				"-LC:\\SDL2-w64\\lib",
+				"-lmingw32",
+				"-lSDL2main",
+				"-lSDL2",
+				"-lSDL2_image",
+				"-Iinclude",
+				"-Wall"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "Builds C++ project"
+		},
+		{
+			"type": "shell",
+			"label": "C++: Run (Debug)",
+			"command": "start ${workspaceFolder}\\bin\\debug\\application.exe",
+			"detail": "Runs the program"
+		},
+		{
+			"label": "C++: Build & Run (Debug)",
+			"dependsOn": [
+				"C++: Build (Debug)",
+				"C++: Run (Debug)"
+			],
+			"dependsOrder": "sequence",
+			"detail": "Builds and runs the program",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "cppbuild",
+			"label": "C++: Build (Release)",
+			"command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+			"args": [
+				"-O3",
+				"src\\*.cpp",
+				"-o",
+				"${workspaceFolder}\\bin\\release\\application.exe",
+				"-s",
+				"-IC:\\SDL2-w64\\include",
+				"-LC:\\SDL2-w64\\lib",
+				"-lmingw32",
+				"-lSDL2main",
+				"-lSDL2",
+				"-lSDL2_image",
+				"-Iinclude",
+				"-Wall"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "Builds C++ project"
+		},
+		{
+			"type": "shell",
+			"label": "C++: Run (Release)",
+			"command": "start ${workspaceFolder}\\bin\\release\\application.exe",
+			"detail": "Runs the program"
+		},
+		{
+			"label": "C++: Build & Run (Release)",
+			"dependsOn": [
+				"C++: Build (Release)",
+				"C++: Run (Release)"
+			],
+			"dependsOrder": "sequence",
+			"detail": "Builds and runs the program",
+			"group": "build"
+		},
+		{
+			"type": "shell",
+			"label": "Update Res Folder (Debug)",
+			"command": "Xcopy res bin\\debug\\res /e/h/c/i/y",
+			"detail": "Copies the res folder into the debug folder"
+		},
+		{
+			"type": "shell",
+			"label": "Update Res Folder (Release)",
+			"command": "Xcopy res bin\\release\\res /e/h/c/i/y",
+			"detail": "Copies the res folder into the release folder"
+		},
+		{
+			"label": "Update Res Folder (ALL)",
+			"dependsOn": [
+				"Update Res Folder (Debug)",
+				"Update Res Folder (Release)"
+			],
+			"dependsOrder": "sequence",
+			"detail": "Copies the res folder into both debug and release folders",
+			"problemMatcher": []
+		}
+	]
+}
