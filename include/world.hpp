@@ -16,8 +16,10 @@ public:
     void destroy();
 
     void render(Window& window, const Vect<int>& offset = {0, 0});
+    void update(const int yOffset);
 
     void genLayers(const int amount);
+    void genLayer();
 
     inline std::vector<Entity>& getPlatforms() { return platforms; }
     inline void removePlatform(const int index) { platforms.erase(platforms.begin() + index); }

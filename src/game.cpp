@@ -81,6 +81,7 @@ void Game::getInputs()
 void Game::update()
 {
     player.update(keys, world);
+    
 }
 
 void Game::render()

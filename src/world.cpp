@@ -31,14 +31,23 @@ void World::render(Window& window, const Vect<int>& offset = {0, 0})
         entity.render(window, offset);
 }
 
+void World::update(const int yOffset)
+{
+    if (yOffset + WINDOW_HEIGHT > layerStartY + (layer * platformSize.y))
+        genLayer();
+}
+
 void World::genLayers(const int amount)
 {
     for (int i = 0; i < amount; i++)
-    {
-        const int offset = (layer % 2 == 0 ? 0 : platformSize.x / 2);
-        const int layersY = layerStartY + (layer++ * platformSize.y);
+        genLayer();
+}
 
-        for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
-            platforms.push_back(Entity(platformTex, l * platformSize.x - offset, layersY));
-    }
+void World::genLayer()
+{
+    const int offset = (layer % 2 == 0 ? 0 : platformSize.x / 2);
+    const int layersY = layerStartY + (layer++ * platformSize.y);
+
+    for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
+        platforms.push_back(Entity(platformTex, l * platformSize.x - offset, layersY));
 }
