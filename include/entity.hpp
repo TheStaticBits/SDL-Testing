@@ -14,7 +14,7 @@ public:
     Entity(SDL_Texture* tex, float x, float y);
     void destroy();
 
-    void render(Window& window);
+    void render(Window& window, const Vect<int>& offset = {0, 0});
 
     // Getter functions
     inline SDL_Texture* getImg() const { return texture; }

@@ -26,8 +26,8 @@ void Entity::destroy()
     SDL_DestroyTexture(texture);
 }
 
-void Entity::render(Window& window)
+void Entity::render(Window& window, const Vect<int>& offset = {0, 0})
 {
-    SDL_Rect dest = { (int)std::round(pos.x), (int)std::round(pos.y), frame.w, frame.h };
+    SDL_Rect dest = { (int)std::round(pos.x) + offset.x, (int)std::round(pos.y) + offset.y, frame.w, frame.h };
     window.render(texture, dest);
 }

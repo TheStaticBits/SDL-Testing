@@ -85,6 +85,9 @@ void Game::update()
 
 void Game::render()
 {
-    player.render(window);
-    world.render(window);
+    Vect<int> offset = {0, player.getX() - WINDOW_HEIGHT / 2};
+    if (offset.y < 0) offset.y = 0;
+    
+    player.render(window, offset);
+    world.render(window, offset);
 }

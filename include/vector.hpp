@@ -10,7 +10,7 @@ struct Vect
     Vect(T x, T y) : x(x), y(y) {} // Intializer
     Vect() : x(0), y(0) {} // Without parameters
 
-    void print()
+    void print() const
     {
         std::cout << "(" << x << ", " << y << ")" << std::endl;
     }

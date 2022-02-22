@@ -15,7 +15,7 @@ public:
     World(SDL_Texture* platformTex);
     void destroy();
 
-    void render(Window& window);
+    void render(Window& window, const Vect<int>& offset = {0, 0});
 
     void genLayers(const int amount);
 

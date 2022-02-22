@@ -25,10 +25,10 @@ void World::destroy()
         entity.destroy();
 }
 
-void World::render(Window& window)
+void World::render(Window& window, const Vect<int>& offset = {0, 0})
 {
     for (Entity& entity : platforms)
-        entity.render(window);
+        entity.render(window, offset);
 }
 
 void World::genLayers(const int amount)
