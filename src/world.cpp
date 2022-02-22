@@ -20,9 +20,6 @@ World::World(SDL_Texture* platformTex)
 void World::destroy()
 {
     SDL_DestroyTexture(platformTex);
-
-    for (Entity& entity : platforms)
-        entity.destroy();
 }
 
 void World::render(Window& window, const Vect<int>& offset = {0, 0})
