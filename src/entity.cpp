@@ -10,13 +10,13 @@
 #include "vector.hpp"
 #include "window.hpp"
 
-Entity::Entity(SDL_Texture* tex, float x, float y)
-    : pos(x, y), texture(tex)
+Entity::Entity(SDL_Texture* tex, Vect<float>& pos)
+    : pos(pos), texture(tex)
 {
     frame.x = 0;
     frame.y = 0;
 
-    Vect<int> size = util::getImgSize(texture);
+    const Vect<int> size = util::getImgSize(texture);
     frame.w = size.x;
     frame.h = size.y;
 }
@@ -28,6 +28,6 @@ void Entity::destroy()
 
 void Entity::render(Window& window, const Vect<int>& offset = {0, 0})
 {
-    SDL_Rect dest = { (int)std::round(pos.x) + offset.x, (int)std::round(pos.y) + offset.y, frame.w, frame.h };
+    SDL_Rect dest = { std::lround(pos.x) + offset.x, std::lround(pos.y) + offset.y, frame.w, frame.h };
     window.render(texture, dest);
 }

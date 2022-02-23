@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <vector>
 #include <algorithm>
+#include <ctime>
+#include <cstdlib>
 
 #include "player.hpp"
 #include "constants.hpp"
@@ -17,6 +19,9 @@ Game::Game()
     // Sets the allowed keys to false
     for (SDL_Keycode key : allowedKeys)
         keys[key] = false;
+
+    // Set seed
+    std::srand(std::time(0));
 }
 
 bool Game::initSDL() const
