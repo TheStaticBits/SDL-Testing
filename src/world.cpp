@@ -10,6 +10,7 @@
 #include "window.hpp"
 #include "constants.hpp"
 #include "utility.hpp"
+#include "particle.hpp"
 
 World::World(SDL_Texture* platformTex)
     : platformSize(util::getImgSize(platformTex)), platformTex(platformTex)
@@ -32,6 +33,14 @@ void World::update(const int yOffset)
 {
     if (yOffset + WINDOW_HEIGHT > layerStartY + (layer * platformSize.y))
         genLayer();
+
+    for (auto i = platforms.begin(), i != platforms.end();)
+    {
+        if (i -> update()) // If the particle should be removed
+            i = platforms.erase(i);
+        else
+            ++i;
+    }
 }
 
 void World::genLayers(const int amount)
@@ -47,4 +56,16 @@ void World::genLayer()
 
     for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
         platforms.push_back(Entity(platformTex, l * platformSize.x - offset, layersY));
+}
+
+void World::removePlatform(const int index)
+{
+    const Vect<int> platCenter = { platforms[i].getX() + platformSize.x / 2, platforms.[i].getY() + platformSize.y / 2};
+
+    // Creating particles
+    for (int i = 0; i < 360; i += 30)
+        particles.append(Particle(platformTex, platCenter, 10, 20, 1, i));
+
+    // Removing
+    platforms.erase(platforms.begin() + index);
 }

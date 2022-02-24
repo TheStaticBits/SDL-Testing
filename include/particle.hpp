@@ -12,7 +12,7 @@
 class Particle : public Entity
 {
 public:
-    Particle(SDL_Texture* tex, const Vect<float>& pos, const int minSize, const int maxSize, const int speed, const int angle);
+    Particle(SDL_Texture* tex, const Vect<float>& pos, const int minSize, const int maxSize, const float speed, const int angle);
 
     bool update();
     void render(Window& window, const Vect<int>& offset = {0, 0});
@@ -20,7 +20,7 @@ public:
 private:
     const float dwindle = 0.2f;
 
-    const int speed;
+    const float speed;
     const int angle;
 
     int size;

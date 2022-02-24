@@ -8,6 +8,7 @@
 
 #include "entity.hpp"
 #include "window.hpp"
+#include "particle.hpp"
 
 class World 
 {
@@ -21,8 +22,9 @@ public:
     void genLayers(const int amount);
     void genLayer();
 
+    void removePlatform(const int index);
+
     inline std::vector<Entity>& getPlatforms() { return platforms; }
-    inline void removePlatform(const int index) { platforms.erase(platforms.begin() + index); }
 
 private:
     const int layerStartY = 100;
@@ -30,6 +32,8 @@ private:
 
     SDL_Texture* platformTex;
     std::vector<Entity> platforms;
+
+    std::vector<Particle> particles;
 
     int layer = 0;
 };

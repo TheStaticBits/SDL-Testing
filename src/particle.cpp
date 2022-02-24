@@ -13,7 +13,7 @@
 #include "utility.hpp"
 #include "constants.hpp"
 
-Particle::Particle(SDL_Texture* tex, const Vect<float>& pos, const int minSize, const int maxSize, const int speed, const int angle)
+Particle::Particle(SDL_Texture* tex, const Vect<float>& pos, const int minSize, const int maxSize, const float speed, const int angle)
     : speed(speed), angle(angle * (PI / 180)), pos(pos), texture(tex)
 {
     // Gets a random square of the texture
@@ -51,6 +51,6 @@ bool Particle::update()
 
 void Particle::render(Window& window, const Vect<int>& offset = {0, 0})
 {
-    SDL_Rect dest = { std::lround(pos.x) + offset.x, std::lround(pos.y) + offset.y, frame.w, frame.h };
+    SDL_Rect dest = { std::lround(pos.x) + offset.x - (size / 2), std::lround(pos.y) + offset.y - (size / 2), frame.w, frame.h };
     window.render(tex, frame, dest);
 }
