@@ -23,5 +23,5 @@ private:
     const float speed;
     const int angle;
 
-    int size;
+    float size;
 }

@@ -29,7 +29,7 @@ Particle::Particle(SDL_Texture* tex, const Vect<float>& pos, const int minSize, 
 
     const Vect<int> texSize = util::getImgSize(tex);
     
-    // Random position
+    // Random position in the texture
     frame.x = std::rand() % (texSize.x - sideLength);
     frame.y = std::rand() % (texSize.y - sideLength);
 }
