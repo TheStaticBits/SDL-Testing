@@ -19,12 +19,11 @@ class Game
 {
 public:
     Game();
+    ~Game();
 
     bool initSDL() const;
 
     void run();
-
-    void quit();
 
 private:
     void handleKey(SDL_Keycode& key, Uint32& type);

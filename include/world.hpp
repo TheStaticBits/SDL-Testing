@@ -14,7 +14,7 @@ class World
 {
 public:
     World(SDL_Texture* platformTex);
-    void destroy();
+    ~World();
 
     void render(Window& window, const Vect<int>& offset = {0, 0});
     void update(const int yOffset);

@@ -24,6 +24,17 @@ Game::Game()
     std::srand(std::time(0));
 }
 
+Game::~Game()
+{
+    delete player;
+    delete window;
+    delete world;
+
+    platforms.clear();
+
+    SDL_Quit();
+}
+
 bool Game::initSDL() const
 {
     if (SDL_Init(SDL_INIT_VIDEO) != 0 || !IMG_Init(IMG_INIT_PNG))
@@ -50,18 +61,6 @@ void Game::run()
 
         window.display();
     }
-}
-
-void Game::quit()
-{
-    player.destroy();
-    window.destroy();
-    world.destroy();
-
-    for (Entity& entity : platforms)
-        entity.destroy();
-
-    SDL_Quit();
 }
 
 void Game::handleKey(SDL_Keycode& key, Uint32& type)
