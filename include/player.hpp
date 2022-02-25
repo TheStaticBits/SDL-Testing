@@ -16,7 +16,7 @@
 class Player : public Entity
 {
 public:
-    Player(Window& window) : Entity(window.loadImage(PLAYER_PATH), 0, 0) {}
+    Player(Window& window) : Entity(window.loadImage(PLAYER_PATH), {0, 0}) {}
 
     void update(std::unordered_map<SDL_Keycode, bool>& keys, World& world);
 

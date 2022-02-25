@@ -11,7 +11,7 @@
 class Entity
 {
 public:
-    Entity(SDL_Texture* tex, Vect<float>& pos);
+    Entity(SDL_Texture* tex, Vect<float> pos, bool initFrame = false);
     void destroy();
 
     void render(Window& window, const Vect<int>& offset = {0, 0});

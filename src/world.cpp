@@ -23,7 +23,7 @@ void World::destroy()
     SDL_DestroyTexture(platformTex);
 }
 
-void World::render(Window& window, const Vect<int>& offset = {0, 0})
+void World::render(Window& window, const Vect<int>& offset)
 {
     for (Entity& entity : platforms)
         entity.render(window, offset);
@@ -34,13 +34,15 @@ void World::update(const int yOffset)
     if (yOffset + WINDOW_HEIGHT > layerStartY + (layer * platformSize.y))
         genLayer();
 
-    for (auto i = platforms.begin(), i != platforms.end();)
-    {
-        if (i -> update()) // If the particle should be removed
-            i = platforms.erase(i);
-        else
-            ++i;
-    }
+    // for (int i = 0, size = particles.size(); i < size;)
+    // {
+    //     if (particles[i].update()) // If the particle should be removed
+    //         particles.erase(particles.begin() + i);
+    //     else
+    //         ++i;
+    // }
+
+    platforms.erase(platforms.begin() + 1);
 }
 
 void World::genLayers(const int amount)
@@ -55,16 +57,18 @@ void World::genLayer()
     const int layersY = layerStartY + (layer++ * platformSize.y);
 
     for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
-        platforms.push_back(Entity(platformTex, l * platformSize.x - offset, layersY));
+        platforms.push_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
 }
 
 void World::removePlatform(const int index)
 {
-    const Vect<int> platCenter = { platforms[i].getX() + platformSize.x / 2, platforms.[i].getY() + platformSize.y / 2};
+    Vect<float> platCenter;
+    platCenter.x = (float)(platforms[index].getX() + platformSize.x / 2);
+    platCenter.y = (float)(platforms[index].getY() + platformSize.y / 2);
 
     // Creating particles
     for (int i = 0; i < 360; i += 30)
-        particles.append(Particle(platformTex, platCenter, 10, 20, 1, i));
+        particles.push_back(Particle(platformTex, platCenter, 10, 20, 1.0f, i));
 
     // Removing
     platforms.erase(platforms.begin() + index);
