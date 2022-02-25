@@ -10,6 +10,11 @@ struct Vect
     Vect(T x, T y) : x(x), y(y) {} // Intializer
     Vect() : x(0), y(0) {} // Without parameters
 
+    // Copy constructor
+    Vect(const Vect<T>& other) { x = other.x; y = other.y }
+    // Copy assignment operator
+    Vect<T>& operator=(const Vect<T>& other) { return *this; }
+
     void print() const
     {
         std::cout << "(" << x << ", " << y << ")" << std::endl;
