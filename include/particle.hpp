@@ -17,13 +17,14 @@ public:
     bool update();
     void render(Window& window, const Vect<int>& offset = {0, 0});
 
+    Particle(const Particle& other) : Entity(other) { speed = other.speed; angle = other.angle; size = other.size; }
     Particle& operator=(const Particle& other) { return *this; }
 
 private:
     const float dwindle = 0.2f;
 
-    const float speed;
-    const int angle;
+    float speed;
+    int angle;
 
     float size;
 }

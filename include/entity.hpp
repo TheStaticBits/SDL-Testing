@@ -12,7 +12,10 @@ class Entity
 {
 public:
     Entity(SDL_Texture* tex, Vect<float>& pos);
-    void destroy();
+    ~Entity();
+
+    Entity(const Entity& other) { pos = other.pos; texture = other.texture; frame = other.frame; }
+    Entity& operator=(const Entity& other) { return *this; }
 
     void render(Window& window, const Vect<int>& offset = {0, 0});
 

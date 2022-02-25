@@ -18,9 +18,12 @@ World::World(SDL_Texture* platformTex)
     genLayers(10);
 }
 
-void World::destroy()
+World::~World()
 {
     SDL_DestroyTexture(platformTex);
+
+    platforms.clear();
+    particles.clear();
 }
 
 void World::render(Window& window, const Vect<int>& offset = {0, 0})
