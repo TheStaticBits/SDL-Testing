@@ -11,8 +11,8 @@
 class Entity
 {
 public:
-    Entity(SDL_Texture* tex, Vect<float>& pos, bool initFrame=true);
-    ~Entity();
+    Entity(SDL_Texture* tex, Vect<float> pos, bool initFrame=true);
+    void destroy();
 
     Entity(const Entity& other) { pos = other.pos; texture = other.texture; frame = other.frame; }
     Entity& operator=(const Entity& other) { return *this; }

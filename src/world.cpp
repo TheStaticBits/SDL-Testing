@@ -12,13 +12,13 @@
 #include "utility.hpp"
 #include "particle.hpp"
 
-World::World(SDL_Texture* platformTex)
-    : platformSize(util::getImgSize(platformTex)), platformTex(platformTex)
+World::World(Window& window)
+    : platformTex(window.loadImage(PLATFORM_PATH)), platformSize(util::getImgSize(platformTex))
 {
     genLayers(10);
 }
 
-World::~World()
+void World::destroy()
 {
     SDL_DestroyTexture(platformTex);
 
@@ -37,15 +37,13 @@ void World::update(const int yOffset)
     if (yOffset + WINDOW_HEIGHT > layerStartY + (layer * platformSize.y))
         genLayer();
 
-    // for (int i = 0, size = particles.size(); i < size;)
-    // {
-    //     if (particles[i].update()) // If the particle should be removed
-    //         particles.erase(particles.begin() + i);
-    //     else
-    //         ++i;
-    // }
-
-    platforms.erase(platforms.begin() + 1);
+    for (int i = 0, size = particles.size(); i < size;)
+    {
+        if (particles[i].update()) // If the particle should be removed
+            particles.erase(particles.begin() + i);
+        else
+            ++i;
+    }
 }
 
 void World::genLayers(const int amount)
@@ -60,7 +58,7 @@ void World::genLayer()
     const int layersY = layerStartY + (layer++ * platformSize.y);
 
     for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
-        platforms.push_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
+        platforms.emplace_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
 }
 
 void World::removePlatform(const int index)

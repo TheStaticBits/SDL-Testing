@@ -21,7 +21,7 @@ Window::Window(const char* title, const int width, const int height)
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
 }
 
-Window::~Window()
+void Window::destroy()
 {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

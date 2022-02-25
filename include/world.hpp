@@ -13,8 +13,8 @@
 class World 
 {
 public:
-    World(SDL_Texture* platformTex);
-    ~World();
+    World(Window& window);
+    void destroy();
 
     void render(Window& window, const Vect<int>& offset = {0, 0});
     void update(const int yOffset);
@@ -28,10 +28,11 @@ public:
 
 private:
     const int layerStartY = 100;
-    const Vect<int> platformSize;
 
     SDL_Texture* platformTex;
     std::vector<Entity> platforms;
+
+    const Vect<int> platformSize;
 
     std::vector<Particle> particles;
 

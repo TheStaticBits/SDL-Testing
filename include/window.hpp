@@ -12,7 +12,7 @@ class Window
 {
 public:
     Window(const char* title, const int width, const int height);
-    ~Window::Window();
+    void destroy();
 
     void display();
     void clear();

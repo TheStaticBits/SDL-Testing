@@ -24,7 +24,7 @@ Entity::Entity(SDL_Texture* tex, Vect<float> pos, bool initFrame)
     }
 }
 
-Entity::~Entity()
+void Entity::destroy() // So it isn't called in places where I don't need it to
 {
     SDL_DestroyTexture(texture);
 }

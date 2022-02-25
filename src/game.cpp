@@ -14,7 +14,7 @@
 #include "constants.hpp"
 
 Game::Game()
-    : window("HELLO", WINDOW_WIDTH, WINDOW_HEIGHT), player(window), world(window.loadImage(PLATFORM_PATH))
+    : window("HELLO", WINDOW_WIDTH, WINDOW_HEIGHT), player(window), world(window)
 {
     // Sets the allowed keys to false
     for (SDL_Keycode key : allowedKeys)
@@ -26,9 +26,9 @@ Game::Game()
 
 Game::~Game()
 {
-    delete player;
-    delete window;
-    delete world;
+    player.destroy();
+    window.destroy();
+    world.destroy();
 
     platforms.clear();
 
