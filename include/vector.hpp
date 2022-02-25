@@ -11,7 +11,7 @@ struct Vect
     Vect() : x(0), y(0) {} // Without parameters
 
     // Copy constructor
-    Vect(const Vect<T>& other) { x = other.x; y = other.y }
+    Vect(const Vect<T>& other) { x = other.x; y = other.y; }
     // Copy assignment operator
     Vect<T>& operator=(const Vect<T>& other) { return *this; }
 
