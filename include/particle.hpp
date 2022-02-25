@@ -17,6 +17,8 @@ public:
     bool update();
     void render(Window& window, const Vect<int>& offset = {0, 0});
 
+    Particle& operator=(const Particle& other) { return *this; }
+
 private:
     const float dwindle = 0.2f;
 
