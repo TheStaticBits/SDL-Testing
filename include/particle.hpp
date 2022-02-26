@@ -17,11 +17,13 @@ public:
     Particle(const Particle& other) : Entity(other) { speed = other.speed; angle = other.angle; size = other.size; }
     Particle& operator=(const Particle& other) { Entity::operator=(other); speed = other.speed; angle = other.angle; size = other.size; return *this; }
 
-    bool update();
+    void update();
     void render(Window& window, const Vect<int>& offset = {0, 0});
 
+    inline bool dead() const { return size <= 0; }
+
 private:
-    static constexpr float dwindle = 0.2f;
+    static constexpr float dwindle = 0.3f;
 
     float speed;
     int angle;

@@ -32,6 +32,7 @@ Game::~Game()
 
     platforms.clear();
 
+    IMG_Quit();
     SDL_Quit();
 }
 
@@ -54,12 +55,11 @@ void Game::run()
     {
         getInputs();
         
-        window.clear();
-        
         update();
         render();
 
         window.display();
+        window.clear();
     }
 }
 
@@ -90,8 +90,8 @@ void Game::update()
 
 void Game::render()
 {
-    offset = {0, player.getX() - WINDOW_HEIGHT / 2};
-    if (offset.y < 0) offset.y = 0;
+    offset.y = WINDOW_HEIGHT / 2 - player.getY();
+    if (offset.y > 0) offset.y = 0;
     
     player.render(window, offset);
     world.render(window, offset);

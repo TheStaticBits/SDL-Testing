@@ -37,16 +37,21 @@ void World::render(Window& window, const Vect<int>& offset)
 
 void World::update(const int yOffset)
 {
-    if (yOffset + WINDOW_HEIGHT > layerStartY + (layer * platformSize.y))
+    if (layerStartY + (layer * platformSize.y) + yOffset < WINDOW_HEIGHT)
         genLayer();
 
-    for (int i = 0, size = particles.size(); i < size;)
+    for (auto i = particles.begin(); i != particles.end();)
     {
-        if (particles[i].update()) // If the particle should be removed
-            particles.erase(particles.begin() + i);
-        else
+        i -> update();
+
+        if (i -> dead()) 
+            i = particles.erase(i);
+        else 
             ++i;
     }
+
+    for (Particle& particle : particles)
+        particle.update();
 }
 
 void World::genLayers(const int amount)
@@ -71,8 +76,8 @@ void World::removePlatform(const int index)
     platCenter.y = (float)(platforms[index].getY() + platformSize.y / 2);
 
     // Creating particles
-    for (int i = 0; i < 360; i += 15)
-        particles.push_back(Particle(platformTex, platCenter, 10, 20, 1.0f, i));
+    for (int i = 0; i < 360; i += 5)
+        particles.push_back(Particle(platformTex, platCenter, 15, 20, 1.2f, i));
 
     // Removing
     platforms.erase(platforms.begin() + index);

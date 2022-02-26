@@ -34,7 +34,7 @@ Particle::Particle(SDL_Texture* tex, Vect<float>& pos, const int minSize, const 
     frame.y = std::rand() % (texSize.y - sideLength);
 }
 
-bool Particle::update()
+void Particle::update()
 {
     // Moving in the direction of the angle
     pos.x += cos(angle) * speed;
@@ -44,9 +44,6 @@ bool Particle::update()
 
     frame.w = std::lround(size);
     frame.h = std::lround(size);
-
-    // Returns whether to delete the particle from where it's stored
-    return (size <= 0);
 }
 
 void Particle::render(Window& window, const Vect<int>& offset)

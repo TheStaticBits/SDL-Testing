@@ -37,9 +37,6 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
 
     // Applying velocity
     Vect<int> collisions = moveCheck(world);
-    
-    if (pos.y >= WINDOW_HEIGHT - frame.h)
-        pos.y = WINDOW_HEIGHT - frame.h;
 
     // Collided with a platform below
     if (collisions.y == 1)

@@ -27,7 +27,7 @@ public:
     inline std::vector<Entity>& getPlatforms() { return platforms; }
 
 private:
-    const int layerStartY = 100;
+    static constexpr int layerStartY = 100;
 
     SDL_Texture* platformTex;
     std::vector<Entity> platforms;
