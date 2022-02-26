@@ -28,5 +28,8 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
 
-    static void error(std::string error);
+    static inline void error(std::string action)
+    {
+        std::cout << "Failed to " << action << ". Error: " << SDL_GetError() << std::endl;
+    }
 };

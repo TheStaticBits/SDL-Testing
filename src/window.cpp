@@ -83,8 +83,3 @@ void Window::drawTexOnTex(SDL_Texture* image, SDL_Texture* drawOn, const Vect<fl
 
     SDL_SetRenderTarget(renderer, NULL); // Resetting
 }
-
-void Window::error(std::string action)
-{
-    std::cout << "Failed to " << action << ". Error: " << SDL_GetError() << std::endl;
-}
