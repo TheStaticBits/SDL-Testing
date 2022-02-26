@@ -30,6 +30,9 @@ void World::render(Window& window, const Vect<int>& offset)
 {
     for (Entity& entity : platforms)
         entity.render(window, offset);
+
+    for (Particle& particle : particles)
+        particle.render(window, offset);
 }
 
 void World::update(const int yOffset)

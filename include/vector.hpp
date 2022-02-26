@@ -13,7 +13,7 @@ struct Vect
     // Copy constructor
     Vect(const Vect<T>& other) { x = other.x; y = other.y; }
     // Copy assignment operator
-    Vect<T>& operator=(const Vect<T>& other) { return *this; }
+    Vect<T>& operator=(const Vect<T>& other) { x = other.x; y = other.y; return *this; }
 
     void print() const
     {

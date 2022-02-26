@@ -15,7 +15,7 @@ public:
     void destroy();
 
     Entity(const Entity& other) { pos = other.pos; texture = other.texture; frame = other.frame; }
-    Entity& operator=(const Entity& other) { return *this; }
+    Entity& operator=(const Entity& other) { pos = other.pos; texture = other.texture; frame = other.frame; return *this; }
 
     void render(Window& window, const Vect<int>& offset = {0, 0});
 
