@@ -15,13 +15,13 @@ public:
     Particle(SDL_Texture* tex, Vect<float>& pos, const int minSize, const int maxSize, const float speed, const int angle);
 
     Particle(const Particle& other) : Entity(other) { speed = other.speed; angle = other.angle; size = other.size; }
-    Particle& operator=(const Particle& other) : Entity::operator=(other) { speed = other.speed; angle = other.angle; size = other.size; return *this; }
+    Particle& operator=(const Particle& other) { Entity::operator=(other); speed = other.speed; angle = other.angle; size = other.size; return *this; }
 
     bool update();
     void render(Window& window, const Vect<int>& offset = {0, 0});
 
 private:
-    const float dwindle = 0.2f;
+    static constexpr float dwindle = 0.2f;
 
     float speed;
     int angle;

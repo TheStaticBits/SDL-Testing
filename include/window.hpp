@@ -28,5 +28,5 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
 
-    void error(std::string error);
+    static void error(std::string error);
 };

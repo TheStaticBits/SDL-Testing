@@ -21,10 +21,10 @@ public:
     void update(std::unordered_map<SDL_Keycode, bool>& keys, World& world);
 
 private:
-    const float gravity = 0.2f;
-    const float speed = 0.8f;
-    const float maxSpeed = 3.0f;
-    const float bounceVel = -5.0f;
+    static constexpr float gravity = 0.2f;
+    static constexpr float speed = 0.8f;
+    static constexpr float maxSpeed = 3.0f;
+    static constexpr float bounceVel = -5.0f;
 
     Vect<float> velocity;
 

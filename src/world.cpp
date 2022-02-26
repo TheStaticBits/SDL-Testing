@@ -71,7 +71,7 @@ void World::removePlatform(const int index)
     platCenter.y = (float)(platforms[index].getY() + platformSize.y / 2);
 
     // Creating particles
-    for (int i = 0; i < 360; i += 30)
+    for (int i = 0; i < 360; i += 15)
         particles.push_back(Particle(platformTex, platCenter, 10, 20, 1.0f, i));
 
     // Removing

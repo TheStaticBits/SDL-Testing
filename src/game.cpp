@@ -14,7 +14,7 @@
 #include "constants.hpp"
 
 Game::Game()
-    : window("HELLO", WINDOW_WIDTH, WINDOW_HEIGHT), player(window), world(window)
+    : window("HELLO", WINDOW_WIDTH, WINDOW_HEIGHT), player(window), world(window), offset{0, 0}
 {
     // Sets the allowed keys to false
     for (SDL_Keycode key : allowedKeys)
@@ -85,12 +85,12 @@ void Game::getInputs()
 void Game::update()
 {
     player.update(keys, world);
-    
+    world.update(offset.y);
 }
 
 void Game::render()
 {
-    Vect<int> offset = {0, player.getX() - WINDOW_HEIGHT / 2};
+    offset = {0, player.getX() - WINDOW_HEIGHT / 2};
     if (offset.y < 0) offset.y = 0;
     
     player.render(window, offset);

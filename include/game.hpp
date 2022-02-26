@@ -39,6 +39,8 @@ private:
     World world;
     std::vector<Entity> platforms;
 
+    Vect<int> offset;
+
     const int windowHeight = 600;
     const int windowWidth = 800;
 
