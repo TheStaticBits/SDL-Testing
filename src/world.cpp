@@ -58,7 +58,7 @@ void World::genLayer()
     const int layersY = layerStartY + (layer++ * platformSize.y);
 
     for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
-        platforms.emplace_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
+        platforms.push_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
 }
 
 void World::removePlatform(const int index)
