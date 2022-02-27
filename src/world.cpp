@@ -63,9 +63,10 @@ void World::genLayers(const int amount)
 void World::genLayer()
 {
     const int offset = (layer % 2 == 0 ? 0 : platformSize.x / 2);
+    const int additional = (layer % 2 == 0 ? 0 : 1);
     const int layersY = layerStartY + (layer++ * platformSize.y);
 
-    for (int l = 0; l < WINDOW_WIDTH / platformSize.x + 1; l++)
+    for (int l = 0, limit = WINDOW_WIDTH / platformSize.x + additional; l < limit; l++)
         platforms.push_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
 }
 
