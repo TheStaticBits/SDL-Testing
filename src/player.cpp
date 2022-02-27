@@ -12,6 +12,12 @@
 #include "constants.hpp"
 #include "vector.hpp"
 
+Player::Player(Window& window)
+    : Entity(window.loadImage(PLAYER_PATH), {0, 0}), width(util::getImgSize(texture).x)
+{
+    
+}
+
 void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
 {
     // Applying movement
@@ -67,12 +73,18 @@ Vect<int> Player::moveCheck(World& world)
                 pos.x = world.getPlatforms()[collided].getPos().x + world.getPlatforms()[collided].getFrame().w;
                 collisions.x = -1;
             }
-            else // Right
+            else if (velocity.x > 0) // Right
             {
                 pos.x = world.getPlatforms()[collided].getPos().x - frame.w;
                 collisions.x = 1;
             }
         }
+
+        // Testing if the player is off the screen on either side
+        if (pos.x < 0) 
+            pos.x = 0;
+        else if (pos.x > WINDOW_WIDTH - width) 
+            pos.x = WINDOW_WIDTH - width;
     }
 
     // Moving and checking Y position

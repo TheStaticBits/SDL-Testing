@@ -12,11 +12,12 @@
 #include "vector.hpp"
 #include "window.hpp"
 #include "world.hpp"
+#include "utility.hpp"
 
 class Player : public Entity
 {
 public:
-    Player(Window& window) : Entity(window.loadImage(PLAYER_PATH), {0, 0}) {}
+    Player(Window& window);
 
     void update(std::unordered_map<SDL_Keycode, bool>& keys, World& world);
 
@@ -30,4 +31,6 @@ private:
 
     Vect<int> moveCheck(World& world);
     int checkAll(std::vector<Entity>& platforms);
+
+    int width;
 };
