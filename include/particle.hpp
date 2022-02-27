@@ -26,7 +26,7 @@ private:
     static constexpr float dwindle = 0.3f;
 
     float speed;
-    int angle;
+    float angle;
 
     float size;
 };
