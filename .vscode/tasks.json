@@ -92,6 +92,67 @@
 			"group": "build"
 		},
 		{
+			"type": "cppbuild",
+			"label": "C++ - JS: Build (Debug)",
+			"command": "em++",
+			"args": [
+				"-g",
+				"src\\*.cpp",
+				"-o",
+				"${workspaceFolder}\\bin\\debug\\application.js",
+				"-IC:\\SDL2-w64\\include",
+				"-LC:\\SDL2-w64\\lib",
+				"-lmingw32",
+				"-lSDL2main",
+				"-lSDL2",
+				"-lSDL2_image",
+				"-Iinclude",
+				"-Wall"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "Builds C++ project to JS"
+		},
+		{
+			"type": "cppbuild",
+			"label": "C++ - JS: Build (Release)",
+			"command": "em++",
+			"args": [
+				"-O3",
+				"src\\*.cpp",
+				"-o",
+				"${workspaceFolder}\\bin\\release\\application.js",
+				"-s",
+				"-IC:\\SDL2-w64\\include",
+				"-LC:\\SDL2-w64\\lib",
+				"-lmingw32",
+				"-lSDL2main",
+				"-lSDL2",
+				"-lSDL2_image",
+				"-Iinclude",
+				"-Wall"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "Builds C++ project to JS"
+		},
+		{
+			"type": "shell",
+			"label": "Setup Emscripten",
+			"command": "emsdk activate latest",
+			"detail": "Sets up environment variables for Emscripten"
+		},
+		{
 			"type": "shell",
 			"label": "Update Res Folder (Debug)",
 			"command": "Xcopy res bin\\debug\\res /e/h/c/i/y",

@@ -38,8 +38,8 @@ private:
 
     std::vector<Particle> particles;
 
-    int layer = 0;
+    unsigned int layer = 0;
 
-    int shakeTimer = 0; 
+    unsigned int shakeTimer = 0; 
     Vect<int> shake = {0, 0};
 };
