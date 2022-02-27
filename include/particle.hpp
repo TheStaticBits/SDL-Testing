@@ -12,10 +12,10 @@
 class Particle : public Entity
 {
 public:
-    Particle(SDL_Texture* tex, Vect<float>& pos, const int minSize, const int maxSize, const float speed, const int angle);
+    Particle(SDL_Texture* tex, Vect<float>& pos, const float dwindle, const int minSize, const int maxSize, const float speed, const int angle);
 
-    Particle(const Particle& other) : Entity(other) { speed = other.speed; angle = other.angle; size = other.size; }
-    Particle& operator=(const Particle& other) { Entity::operator=(other); speed = other.speed; angle = other.angle; size = other.size; return *this; }
+    Particle(const Particle& other);
+    Particle& operator=(const Particle& other);
 
     void update();
     void render(Window& window, const Vect<int>& offset = {0, 0});
@@ -23,7 +23,7 @@ public:
     inline bool dead() const { return size <= 0; }
 
 private:
-    static constexpr float dwindle = 0.3f;
+    float dwindle;
 
     float speed;
     float angle;

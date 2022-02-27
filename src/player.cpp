@@ -13,9 +13,9 @@
 #include "vector.hpp"
 
 Player::Player(Window& window)
-    : Entity(window.loadImage(PLAYER_PATH), {0, 0}), width(util::getImgSize(texture).x)
+    : Entity(window.loadImage(PLAYER_PATH), {0, 0})
 {
-    
+
 }
 
 void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
@@ -83,8 +83,8 @@ Vect<int> Player::moveCheck(World& world)
         // Testing if the player is off the screen on either side
         if (pos.x < 0) 
             pos.x = 0;
-        else if (pos.x > WINDOW_WIDTH - width) 
-            pos.x = WINDOW_WIDTH - width;
+        else if (pos.x > WINDOW_WIDTH - frame.w) 
+            pos.x = WINDOW_WIDTH - frame.w;
     }
 
     // Moving and checking Y position

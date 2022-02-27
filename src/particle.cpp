@@ -13,8 +13,8 @@
 #include "utility.hpp"
 #include "constants.hpp"
 
-Particle::Particle(SDL_Texture* tex, Vect<float>& pos, const int minSize, const int maxSize, const float speed, const int angle)
-    : Entity(tex, pos, false), speed(speed), angle(angle * (PI / 180))
+Particle::Particle(SDL_Texture* tex, Vect<float>& pos, const float dwindle, const int minSize, const int maxSize, const float speed, const int angle)
+    : Entity(tex, pos, false), dwindle(dwindle), speed(speed), angle(angle * (PI / 180))
 {
     // Gets a random square of the texture
 
@@ -32,6 +32,27 @@ Particle::Particle(SDL_Texture* tex, Vect<float>& pos, const int minSize, const 
     // Random position in the texture
     frame.x = std::rand() % (texSize.x - sideLength);
     frame.y = std::rand() % (texSize.y - sideLength);
+}
+
+// Copy constructor
+Particle::Particle(const Particle& other)
+    : Entity(other) 
+{
+    dwindle = other.dwindle;
+    speed = other.speed;
+    angle = other.angle;
+    size = other.size;
+}
+
+// Copy assignment operator
+Particle& Particle::operator=(const Particle& other) 
+{
+    Entity::operator=(other);
+    dwindle = other.dwindle;
+    speed = other.speed;
+    angle = other.angle;
+    size = other.size;
+    return *this;
 }
 
 void Particle::update()
