@@ -15,7 +15,7 @@
 World::World(Window& window)
     : platformTex(window.loadImage(PLATFORM_PATH)), platformSize(util::getImgSize(platformTex))
 {
-    genLayers(10);
+    
 }
 
 void World::destroy()

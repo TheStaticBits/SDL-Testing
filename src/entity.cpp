@@ -31,6 +31,6 @@ void Entity::destroy() // So it isn't called in places where I don't need it to
 
 void Entity::render(Window& window, const Vect<int>& offset)
 {
-    SDL_Rect dest = { std::lround(pos.x) + offset.x, std::lround(pos.y) + offset.y, frame.w, frame.h };
+    SDL_Rect dest = { (int)std::floor(pos.x) + offset.x, (int)std::floor(pos.y) + offset.y, frame.w, frame.h };
     window.render(texture, dest);
 }

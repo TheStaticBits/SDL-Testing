@@ -7,11 +7,12 @@
 #include <string>
 
 #include "vector.hpp"
+#include "constants.hpp"
 
 class Window
 {
 public:
-    Window(const char* title, const int width, const int height);
+    Window(const char* title);
     void destroy();
 
     void display();
@@ -27,6 +28,10 @@ public:
 private:
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Texture* miniWindow;
+    
+    SDL_Rect windowFrame;
+    SDL_Rect miniWindowFrame;
 
     static inline void error(std::string action)
     {

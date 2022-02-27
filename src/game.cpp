@@ -14,7 +14,7 @@
 #include "constants.hpp"
 
 Game::Game()
-    : window("HELLO", WINDOW_WIDTH, WINDOW_HEIGHT), player(window), world(window), offset{0, 0}
+    : window("HELLO"), player(window), world(window), offset{0, 0}
 {
     // Sets the allowed keys to false
     for (SDL_Keycode key : allowedKeys)
