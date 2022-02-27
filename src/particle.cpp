@@ -4,7 +4,6 @@
 #include <sDL2/SDL_image.h>
 
 #include <iostream>
-#include <cstdlib>
 #include <math.h>
 
 #include "window.hpp"
@@ -19,7 +18,7 @@ Particle::Particle(SDL_Texture* tex, Vect<float>& pos, const float dwindle, cons
     // Gets a random square of the texture
 
     // Random side length
-    const int sideLength = std::rand() % (maxSize - minSize) + minSize;
+    const int sideLength = rand() % (maxSize - minSize) + minSize;
 
     frame.w = sideLength;
     frame.h = sideLength;

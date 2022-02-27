@@ -15,7 +15,7 @@
 World::World(Window& window)
     : platformTex(window.loadImage(PLATFORM_PATH)), platformSize(util::getImgSize(platformTex))
 {
-    
+
 }
 
 void World::destroy()
@@ -37,9 +37,11 @@ void World::render(Window& window, const Vect<int>& offset)
 
 void World::update(const int yOffset)
 {
+    // Generating layers if needed
     if (layerStartY + (layer * platformSize.y) + yOffset < WINDOW_HEIGHT)
         genLayer();
 
+    // Updating particles
     for (auto i = particles.begin(); i != particles.end();)
     {
         i -> update();
@@ -50,8 +52,17 @@ void World::update(const int yOffset)
             ++i;
     }
 
-    for (Particle& particle : particles)
-        particle.update();
+    // Updating shake timer
+    if (shakeTimer > 0)
+    {
+        shakeTimer--;
+
+        if (shakeTimer % 2 == 0)
+        {
+            shake.x = (rand() % 5) - 2;
+            shake.y = (rand() % 5) - 2;
+        }
+    }
 }
 
 void World::genLayers(const int amount)
@@ -78,8 +89,11 @@ void World::removePlatform(const int index)
 
     // Creating particles
     for (int i = 0; i < 360; i += 5)
-        particles.push_back(Particle(platformTex, platCenter, 0.3f, 30, 40, 4.0f, i));
+        particles.push_back(Particle(platformTex, platCenter, 0.3f, 10, 20, 4.0f, i));
 
     // Removing
     platforms.erase(platforms.begin() + index);
+
+    // Shaking
+    shakeTimer = 10;
 }

@@ -24,6 +24,8 @@ public:
 
     void removePlatform(const int index);
 
+    inline Vect<int> getShake() const { return shake; }
+
     inline std::vector<Entity>& getPlatforms() { return platforms; }
 
 private:
@@ -37,4 +39,7 @@ private:
     std::vector<Particle> particles;
 
     int layer = 0;
+
+    int shakeTimer = 0; 
+    Vect<int> shake = {0, 0};
 };

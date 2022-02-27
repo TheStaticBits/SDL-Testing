@@ -58,7 +58,7 @@ void Game::run()
         update();
         render();
 
-        window.display();
+        window.display(world.getShake());
         window.clear();
     }
 }

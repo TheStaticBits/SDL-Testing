@@ -15,7 +15,7 @@ public:
     Window(const char* title);
     void destroy();
 
-    void display();
+    void display(Vect<int> offset);
     void clear();
 
     SDL_Texture* loadImage(const char* path);
@@ -29,9 +29,6 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Texture* miniWindow;
-    
-    SDL_Rect windowFrame;
-    SDL_Rect miniWindowFrame;
 
     static inline void error(std::string action)
     {

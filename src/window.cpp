@@ -12,7 +12,7 @@
 #include "entity.hpp"
 
 Window::Window(const char* title)
-    : window(NULL), renderer(NULL), windowFrame{0, 0, AWINDOW_WIDTH, AWINDOW_HEIGHT}, miniWindowFrame{0, 0, WINDOW_WIDTH, WINDOW_HEIGHT}
+    : window(NULL), renderer(NULL)
 {
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, AWINDOW_WIDTH, AWINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 
@@ -33,11 +33,12 @@ void Window::destroy()
     SDL_DestroyWindow(window);
 }
 
-void Window::display()
+void Window::display(Vect<int> offset)
 {
     SDL_SetRenderTarget(renderer, NULL); // Set to window
     
-    render(miniWindow, windowFrame); // Scaling up and rendering
+    SDL_Rect pos = {offset.x, offset.y, AWINDOW_WIDTH, AWINDOW_HEIGHT};
+    render(miniWindow, pos); // Scaling up and rendering
     SDL_RenderPresent(renderer);
     
     SDL_SetRenderTarget(renderer, miniWindow); // Set to mini window
