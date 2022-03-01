@@ -62,7 +62,9 @@ void World::update(const int yOffset)
             shake.x = (rand() % 5) - 2;
             shake.y = (rand() % 5) - 2;
         }
-    }
+    } 
+    else 
+        shake = {0, 0};
 }
 
 void World::genLayers(const int amount)
