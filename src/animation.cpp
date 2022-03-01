@@ -4,7 +4,7 @@
 #include <SDL2/SDL_image.h>
 
 #include <iostream>
-#include <cmath>
+#include <math.h>
 
 #include "utility.hpp"
 #include "constants.hpp"
@@ -31,7 +31,7 @@ void Animation::update()
 void Animation::render(Window& window, const Vect<float>& renderPos)
 {
     SDL_Rect src = { currentFrame * width, 0, width, height };
-    SDL_Rect dest = { std::lround(renderPos.x), std::lround(renderPos.y), width, height };
+    SDL_Rect dest = { (int)round(renderPos.x), (int)round(renderPos.y), width, height };
 
     window.render(texture, src, dest);
 }

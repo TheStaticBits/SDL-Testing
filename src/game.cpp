@@ -3,6 +3,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+    #include <emscripten/html5.h>
+#endif
+
 #include <iostream>
 #include <unordered_map>
 #include <vector>
@@ -48,19 +53,28 @@ bool Game::initSDL() const
     return true;
 }
 
+void it(); // Defined in main.cpp, calls Game::iteration()
+
 void Game::run()
 {
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(it, 0, 1);
+#else
     // Main loop
     while (!exit)
-    {
-        getInputs();
-        
-        update();
-        render();
+        iteration();
+#endif
+}
 
-        window.display(world.getShake());
-        window.clear();
-    }
+void Game::iteration()
+{
+    getInputs();
+        
+    update();
+    render();
+
+    window.display(world.getShake());
+    window.clear();
 }
 
 void Game::handleKey(SDL_Keycode& key, Uint32& type)

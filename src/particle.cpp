@@ -1,7 +1,7 @@
 #include "particle.hpp"
 
 #include <SDL2/SDL.h>
-#include <sDL2/SDL_image.h>
+#include <SDL2/SDL_image.h>
 
 #include <iostream>
 #include <math.h>
@@ -62,12 +62,12 @@ void Particle::update()
 
     size -= dwindle;
 
-    frame.w = std::lround(size);
-    frame.h = std::lround(size);
+    frame.w = (int)round(size);
+    frame.h = (int)round(size);
 }
 
 void Particle::render(Window& window, const Vect<int>& offset)
 {
-    SDL_Rect dest = { std::lround(pos.x) + offset.x - std::lround(size / 2), std::lround(pos.y) + offset.y - std::lround(size / 2), frame.w, frame.h };
+    SDL_Rect dest = { (int)round(pos.x) + offset.x - (int)round(size / 2), (int)round(pos.y) + offset.y - (int)round(size / 2), frame.w, frame.h };
     window.render(texture, frame, dest);
 }

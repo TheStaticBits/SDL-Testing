@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "cppbuild",
+			"type": "shell",
 			"label": "C++: Build (Debug)",
 			"command": "C:\\msys64\\mingw64\\bin\\g++.exe",
 			"args": [
@@ -23,7 +23,7 @@
 				"cwd": "${workspaceFolder}"
 			},
 			"problemMatcher": [
-				"$gcc"
+				"$msCompile"
 			],
 			"group": "build",
 			"detail": "Builds C++ project"
@@ -48,7 +48,7 @@
 			}
 		},
 		{
-			"type": "cppbuild",
+			"type": "shell",
 			"label": "C++: Build (Release)",
 			"command": "C:\\msys64\\mingw64\\bin\\g++.exe",
 			"args": [
@@ -70,7 +70,7 @@
 				"cwd": "${workspaceFolder}"
 			},
 			"problemMatcher": [
-				"$gcc"
+				"$msCompile"
 			],
 			"group": "build",
 			"detail": "Builds C++ project"
@@ -92,20 +92,28 @@
 			"group": "build"
 		},
 		{
-			"type": "cppbuild",
+			"type": "shell",
 			"label": "C++ - JS: Build (Debug)",
 			"command": "em++",
 			"args": [
 				"-g",
-				"src\\*.cpp",
+				"src\\animation.cpp",
+				"src\\entity.cpp",
+				"src\\game.cpp",
+				"src\\main.cpp",
+				"src\\particle.cpp",
+				"src\\player.cpp",
+				"src\\window.cpp",
+				"src\\world.cpp",
+				"-lSDL",
+				"-s", "USE_SDL=2",
+				"--preload-file res",
+				"-s", "USE_WASM=1",
+				"-s", "USE_SDL_IMAGE=2",
+				"-s", "SDL2_IMAGE_FORMATS='[\"png\"]'",
+				"-s", "ASYNCIFY=1",
 				"-o",
-				"${workspaceFolder}\\bin\\debug\\application.js",
-				"-IC:\\SDL2-w64\\include",
-				"-LC:\\SDL2-w64\\lib",
-				"-lmingw32",
-				"-lSDL2main",
-				"-lSDL2",
-				"-lSDL2_image",
+				"${workspaceFolder}\\bin\\debug\\application.html",
 				"-Iinclude",
 				"-Wall"
 			],
@@ -113,44 +121,45 @@
 				"cwd": "${workspaceFolder}"
 			},
 			"problemMatcher": [
-				"$gcc"
-			],
-			"group": "build",
-			"detail": "Builds C++ project to JS"
-		},
-		{
-			"type": "cppbuild",
-			"label": "C++ - JS: Build (Release)",
-			"command": "em++",
-			"args": [
-				"-O3",
-				"src\\*.cpp",
-				"-o",
-				"${workspaceFolder}\\bin\\release\\application.js",
-				"-s",
-				"-IC:\\SDL2-w64\\include",
-				"-LC:\\SDL2-w64\\lib",
-				"-lmingw32",
-				"-lSDL2main",
-				"-lSDL2",
-				"-lSDL2_image",
-				"-Iinclude",
-				"-Wall"
-			],
-			"options": {
-				"cwd": "${workspaceFolder}"
-			},
-			"problemMatcher": [
-				"$gcc"
+				"$msCompile"
 			],
 			"group": "build",
 			"detail": "Builds C++ project to JS"
 		},
 		{
 			"type": "shell",
-			"label": "Setup Emscripten",
-			"command": "emsdk activate latest",
-			"detail": "Sets up environment variables for Emscripten"
+			"label": "C++ - JS: Build (Release)",
+			"command": "em++",
+			"args": [
+				"-O3",
+				"src\\animation.cpp",
+				"src\\entity.cpp",
+				"src\\game.cpp",
+				"src\\main.cpp",
+				"src\\particle.cpp",
+				"src\\player.cpp",
+				"src\\window.cpp",
+				"src\\world.cpp",
+				"-lSDL",
+				"-s", "USE_SDL=2",
+				"--preload-file res",
+				"-s", "USE_WASM=1",
+				"-s", "USE_SDL_IMAGE=2",
+				"-s", "SDL2_IMAGE_FORMATS='[\"png\"]'",
+				"-s", "ASYNCIFY=1",
+				"-o",
+				"${workspaceFolder}\\bin\\release\\application.html",
+				"-Iinclude",
+				"-Wall"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build",
+			"detail": "Builds C++ project to JS"
 		},
 		{
 			"type": "shell",

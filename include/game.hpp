@@ -24,6 +24,7 @@ public:
     bool initSDL() const;
 
     void run();
+    void iteration();
 
 private:
     void handleKey(SDL_Keycode& key, Uint32& type);
@@ -40,9 +41,6 @@ private:
     std::vector<Entity> platforms;
 
     Vect<int> offset;
-
-    const int windowHeight = 600;
-    const int windowWidth = 800;
 
     bool exit = false;
     SDL_Event event;

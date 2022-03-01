@@ -14,6 +14,9 @@
 Window::Window(const char* title)
     : window(NULL), renderer(NULL)
 {
+    // For Emscripten
+    // SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
+
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, AWINDOW_WIDTH, AWINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 
     if (window == NULL)

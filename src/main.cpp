@@ -5,10 +5,15 @@
 
 #include "game.hpp"
 
+Game game;
+
+void it()
+{
+    game.iteration();
+}
+
 int main(int argc, char* argv[])
 {
-    Game game;
-
     if (!game.initSDL())
     {
         SDL_Quit();
