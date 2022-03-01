@@ -19,7 +19,7 @@
 #include "constants.hpp"
 
 Game::Game()
-    : window("HELLO"), player(window), world(window), offset{0, 0}
+    : window("HELLO"), player(window), world(window), offset{0, 0}, waitUntil(0)
 {
     // Sets the allowed keys to false
     for (SDL_Keycode key : allowedKeys)
@@ -75,6 +75,18 @@ void Game::iteration()
 
     window.display(world.getShake());
     window.clear();
+
+    cap();
+}
+
+void Game::cap()
+{
+    // Capping FPS
+    if (capFPS && SDL_GetTicks64() < waitUntil)
+        SDL_Delay(waitUntil - SDL_GetTicks64());
+    
+    // Updating waitUntil
+    waitUntil = SDL_GetTicks64() + (1000 / FPS);
 }
 
 void Game::handleKey(SDL_Keycode& key, Uint32& type)
