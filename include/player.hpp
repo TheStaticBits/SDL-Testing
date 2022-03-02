@@ -19,13 +19,17 @@ class Player : public Entity
 public:
     Player(Window& window);
 
-    void update(std::unordered_map<SDL_Keycode, bool>& keys, World& world);
+    void update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_map<SDL_Keycode, bool> doublePress, World& world);
 
 private:
     static constexpr float gravity = 0.2f;
     static constexpr float speed = 0.8f;
     static constexpr float maxSpeed = 3.0f;
     static constexpr float bounceVel = -5.0f;
+    
+    static constexpr int dashDuration = 60; // One second
+    int dash;
+    int dashTimer;
 
     Vect<float> velocity;
 

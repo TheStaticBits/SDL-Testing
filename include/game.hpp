@@ -29,6 +29,7 @@ public:
 private:
     static constexpr int FPS = 60;
     static constexpr bool capFPS = true;
+    static constexpr int keyCountdown = 20;
 
     void cap();
 
@@ -39,6 +40,9 @@ private:
     void render();
 
     std::unordered_map<SDL_Keycode, bool> keys;
+
+    std::unordered_map<SDL_Keycode, bool> doublePress;
+    std::unordered_map<SDL_Keycode, int> dPressCountdown;
 
     Window window;
     Player player;

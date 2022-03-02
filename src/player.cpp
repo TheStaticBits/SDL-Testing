@@ -13,12 +13,12 @@
 #include "vector.hpp"
 
 Player::Player(Window& window)
-    : Entity(window.loadImage(PLAYER_PATH), {0, 0})
+    : Entity(window.loadImage(PLAYER_PATH), {0, 0}), dash(0), dashTimer(0)
 {
 
 }
 
-void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
+void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_map<SDL_Keycode, bool> doublePress, World& world)
 {
     // Applying movement
     if (keys[SDLK_LEFT])
@@ -35,8 +35,27 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, World& world)
         if ((0 < velocity.x && velocity.x < speed) || (0 > velocity.x && velocity.x > speed))
             velocity.x = 0;
     }
-    
+
     velocity.x = util::lock(velocity.x, -maxSpeed, maxSpeed);
+
+    // Checking dash
+    if (doublePress[SDLK_RIGHT] || doublePress[SDLK_LEFT])
+    {
+        // Dashed
+        if (doublePress[SDLK_RIGHT]) dash = 1;
+        else dash = 0;
+        
+        dashTimer = dashDuration;
+    }
+
+    // Updating dash timer
+    if (dashTimer > 0)
+    {
+        if (--dashTimer <= 0)
+            dash = 0; // Dash completed
+        else
+            velocity = {maxSpeed * dash, 0}; // Dashing left/right, zero y vel
+    }
     
     // Applying gravity
     velocity.y += gravity;
@@ -68,15 +87,23 @@ Vect<int> Player::moveCheck(World& world)
 
         if (collided != -1)
         {
-            if (velocity.x < 0) // Left
+            if (dash == 0)
             {
-                pos.x = world.getPlatforms()[collided].getPos().x + world.getPlatforms()[collided].getFrame().w;
-                collisions.x = -1;
+                if (velocity.x < 0) // Left
+                {
+                    pos.x = world.getPlatforms()[collided].getPos().x + world.getPlatforms()[collided].getFrame().w;
+                    collisions.x = -1;
+                }
+                else if (velocity.x > 0) // Right
+                {
+                    pos.x = world.getPlatforms()[collided].getPos().x - frame.w;
+                    collisions.x = 1;
+                }
             }
-            else if (velocity.x > 0) // Right
+            else 
             {
-                pos.x = world.getPlatforms()[collided].getPos().x - frame.w;
-                collisions.x = 1;
+                // Dashing
+                world.removePlatform(collided);
             }
         }
 
