@@ -59,8 +59,8 @@ void World::update(const int yOffset)
 
         if (shakeTimer % 2 == 0)
         {
-            shake.x = (rand() % 5) - 2;
-            shake.y = (rand() % 5) - 2;
+            shake.x = (rand() % 9) - 4;
+            shake.y = (rand() % 9) - 4;
         }
     } 
     else 

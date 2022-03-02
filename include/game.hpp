@@ -54,5 +54,5 @@ private:
     bool exit = false;
     SDL_Event event;
 
-    Uint64 waitUntil;
+    Uint32 waitUntil;
 };

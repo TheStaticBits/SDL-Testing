@@ -82,11 +82,11 @@ void Game::iteration()
 void Game::cap()
 {
     // Capping FPS
-    if (capFPS && SDL_GetTicks64() < waitUntil)
-        SDL_Delay(waitUntil - SDL_GetTicks64());
+    if (capFPS && SDL_GetTicks() < waitUntil)
+        SDL_Delay(waitUntil - SDL_GetTicks());
     
     // Updating waitUntil
-    waitUntil = SDL_GetTicks64() + (1000 / FPS);
+    waitUntil = SDL_GetTicks() + (1000 / FPS);
 }
 
 void Game::handleKey(SDL_Keycode& key, Uint32& type)
@@ -97,7 +97,7 @@ void Game::handleKey(SDL_Keycode& key, Uint32& type)
     {
         keys[key] = (type == SDL_KEYDOWN);
 
-        if (key[key]) // Key pressed down
+        if (keys[key]) // Key pressed down
         {
             if (dPressCountdown[key] > 0) // If it was the second press
             {
@@ -117,8 +117,8 @@ void Game::getInputs()
     // Updating double press countdowns
     for (auto& i : dPressCountdown)
     {
-        if (i.first > 0)
-            --i.first;
+        if (i.second > 0)
+            --i.second;
     }
 
     // Resetting double press results

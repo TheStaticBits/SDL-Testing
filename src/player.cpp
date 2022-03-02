@@ -37,13 +37,15 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
     }
 
     velocity.x = util::lock(velocity.x, -maxSpeed, maxSpeed);
+    // Applying gravity
+    velocity.y += gravity;
 
     // Checking dash
     if (doublePress[SDLK_RIGHT] || doublePress[SDLK_LEFT])
     {
         // Dashed
         if (doublePress[SDLK_RIGHT]) dash = 1;
-        else dash = 0;
+        else dash = -1;
         
         dashTimer = dashDuration;
     }
@@ -54,11 +56,8 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
         if (--dashTimer <= 0)
             dash = 0; // Dash completed
         else
-            velocity = {maxSpeed * dash, 0}; // Dashing left/right, zero y vel
+            velocity = {dashSpeed * dash, 0}; // Dashing left/right, zero y vel
     }
-    
-    // Applying gravity
-    velocity.y += gravity;
 
     // Applying velocity
     Vect<int> collisions = moveCheck(world);
@@ -101,17 +100,20 @@ Vect<int> Player::moveCheck(World& world)
                 }
             }
             else 
-            {
-                // Dashing
-                world.removePlatform(collided);
-            }
+                world.removePlatform(collided); // Dashing
         }
 
         // Testing if the player is off the screen on either side
         if (pos.x < 0) 
+        {
             pos.x = 0;
-        else if (pos.x > WINDOW_WIDTH - frame.w) 
+            dash = 0;
+        }
+        else if (pos.x > WINDOW_WIDTH - frame.w)
+        { 
             pos.x = WINDOW_WIDTH - frame.w;
+            dash = 0;
+        }
     }
 
     // Moving and checking Y position

@@ -27,7 +27,9 @@ private:
     static constexpr float maxSpeed = 3.0f;
     static constexpr float bounceVel = -5.0f;
     
-    static constexpr int dashDuration = 60; // One second
+    static constexpr int dashDuration = 12; // One second
+    static constexpr float dashSpeed = 8.0f;
+
     int dash;
     int dashTimer;
 

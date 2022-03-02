@@ -105,15 +105,14 @@
 				"src\\player.cpp",
 				"src\\window.cpp",
 				"src\\world.cpp",
-				"-lSDL",
+				"-s", "WASM=1",
 				"-s", "USE_SDL=2",
-				"--preload-file res",
-				"-s", "USE_WASM=1",
+				"--preload-file", "res",
 				"-s", "USE_SDL_IMAGE=2",
 				"-s", "SDL2_IMAGE_FORMATS='[\"png\"]'",
 				"-s", "ASYNCIFY=1",
 				"-o",
-				"${workspaceFolder}\\bin\\debug\\application.js",
+				"bin\\web\\application.js",
 				"-Iinclude",
 				"-Wall"
 			],
@@ -142,13 +141,13 @@
 				"src\\world.cpp",
 				"-lSDL",
 				"-s", "USE_SDL=2",
-				"--preload-file res",
-				"-s", "USE_WASM=1",
+				"--preload-file", "res",
+				"-s", "WASM=1",
 				"-s", "USE_SDL_IMAGE=2",
 				"-s", "SDL2_IMAGE_FORMATS='[\"png\"]'",
 				"-s", "ASYNCIFY=1",
 				"-o",
-				"${workspaceFolder}\\bin\\release\\application.js",
+				"bin\\web\\application.js",
 				"-Iinclude",
 				"-Wall"
 			],
@@ -165,19 +164,26 @@
 			"type": "shell",
 			"label": "Update Res Folder (Debug)",
 			"command": "Xcopy res bin\\debug\\res /e/h/c/i/y",
-			"detail": "Copies the res folder into the debug folder"
+			"detail": "Copies the res folder into the bin/debug folder"
 		},
 		{
 			"type": "shell",
 			"label": "Update Res Folder (Release)",
 			"command": "Xcopy res bin\\release\\res /e/h/c/i/y",
-			"detail": "Copies the res folder into the release folder"
+			"detail": "Copies the res folder into the bin/release folder"
+		},
+		{
+			"type": "shell",
+			"label": "Update Res Folder (Web)",
+			"command": "Xcopy res bin\\web\\res /e/h/c/i/y",
+			"detail": "Copies the res folder into the bin/web folder"
 		},
 		{
 			"label": "Update Res Folder (ALL)",
 			"dependsOn": [
 				"Update Res Folder (Debug)",
-				"Update Res Folder (Release)"
+				"Update Res Folder (Release)",
+				"Update Res Folder (Web)"
 			],
 			"dependsOrder": "sequence",
 			"detail": "Copies the res folder into both debug and release folders",
