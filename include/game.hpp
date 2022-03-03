@@ -28,10 +28,7 @@ public:
 
 private:
     static constexpr int FPS = 60;
-    static constexpr bool capFPS = true;
     static constexpr int keyCountdown = 20;
-
-    void cap();
 
     void handleKey(SDL_Keycode& key, Uint32& type);
     void getInputs();
@@ -53,6 +50,4 @@ private:
 
     bool exit = false;
     SDL_Event event;
-
-    Uint32 waitUntil;
 };
