@@ -38,8 +38,9 @@ private:
 
     std::unordered_map<SDL_Keycode, bool> keys;
 
-    std::unordered_map<SDL_Keycode, bool> doublePress;
-    std::unordered_map<SDL_Keycode, int> dPressCountdown;
+    SDL_Keycode doublePress;
+    SDL_Keycode dPressCurrent;
+    int dPressCountdown;
 
     Window window;
     Player player;

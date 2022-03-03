@@ -83,35 +83,34 @@ void Game::handleKey(SDL_Keycode& key, Uint32& type)
         exit = true;
     else if (std::find(allowedKeys.begin(), allowedKeys.end(), key) != allowedKeys.end())
     {
+        SDL_Keycode prevKeyPress = keys[key];
         keys[key] = (type == SDL_KEYDOWN);
 
-        if (keys[key]) // Key pressed down
+        // Handling double presses
+        if (keys[key] && !prevKeyPress) // Key pressed down
         {
-            if (dPressCountdown[key] > 0) // If it was the second press
+            if (dPressCountdown > 0 && key == dPressCurrent) // Second press
             {
                 // DOUBLE PRESSED!
                 // Resets after one frame
-                doublePress[key] = true;
-                dPressCountdown[key] = 0;
+                doublePress = key;
+                dPressCountdown = 0;
+            }
+            else
+            {
+                dPressCurrent = key; // First press
+                dPressCountdown = keyCountdown; // Setting countdown
             }
         }
-        else
-            dPressCountdown[key] = keyCountdown;
     }
 }
 
 void Game::getInputs()
 {
     // Updating double press countdowns
-    for (auto& i : dPressCountdown)
-    {
-        if (i.second > 0)
-            --i.second;
-    }
-
+    if (dPressCountdown > 0) --dPressCountdown;
     // Resetting double press results
-    for (auto& i : doublePress)
-        i.second = false;
+    doublePress = -1;
 
     // Getting inputs
     while (SDL_PollEvent(&event))

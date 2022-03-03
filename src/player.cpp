@@ -18,7 +18,7 @@ Player::Player(Window& window)
 
 }
 
-void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_map<SDL_Keycode, bool> doublePress, World& world)
+void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, SDL_Keycode doublePress, World& world)
 {
     // Applying movement
     if (keys[SDLK_LEFT])
@@ -42,16 +42,17 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
     velocity.y += gravity; // Applying gravity
 
     // Checking dash
-    if (doublePress[SDLK_RIGHT] || doublePress[SDLK_LEFT] || doublePress[SDLK_UP])
+    if (doublePress == SDLK_RIGHT || doublePress == SDLK_LEFT || doublePress == SDLK_UP)
     {
         if (dashCooldown == 0)
         {
             // Dashed
-            if (doublePress[SDLK_RIGHT]) dash.x = 1;
-            else if (doublePress[SDLK_LEFT]) dash.x = -1;
+            if (doublePress == SDLK_RIGHT) dash.x = 1;
+            else if (doublePress == SDLK_LEFT) dash.x = -1;
             else dash.y = -1;
             
             dashTimer = dashDuration;
+            dashCooldown = dashCooldownDur;
         }
     }
 
@@ -59,11 +60,10 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
     if (dashTimer > 0)
     {
         if (--dashTimer <= 0)
-            endDash(); // Dash completed
+            dash = {0, 0}; // Dash completed
         else
         {
-            velocity = {dash.x * dashSpeed.x, dash.y * dashSpeed.y}; // Dashing
-            velocity.print();
+            velocity = {dash.x * dashSpeed.x, dash.y * dashSpeed.y}; // Dashing 
         }
     }
 
@@ -82,12 +82,6 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
         if (dash.y == 0)
             velocity.y = 0;
     }
-}
-
-void Player::endDash()
-{
-    dash = {0, 0};
-    dashCooldown = dashCooldownDur;
 }
 
 Vect<int> Player::moveCheck(World& world)
@@ -126,12 +120,12 @@ Vect<int> Player::moveCheck(World& world)
         if (pos.x < 0) 
         {
             pos.x = 0;
-            if (dash.x != 0) endDash();
+            dash.x = 0;
         }
         else if (pos.x > WINDOW_WIDTH - frame.w)
         { 
             pos.x = WINDOW_WIDTH - frame.w;
-            if (dash.x != 0) endDash();
+            dash.x = 0;
         }
     }
 
