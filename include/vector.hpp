@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-template<typename T>
+template <typename T>
 struct Vect
 {
     T x, y;
@@ -13,7 +13,7 @@ struct Vect
     // Copy constructor
     Vect(const Vect<T>& other) { x = other.x; y = other.y; }
     // Copy assignment operator
-    Vect<T>& operator=(const Vect<T>& other) { x = other.x; y = other.y; return *this; }
+    Vect<T>& operator=(const Vect<T>& other) { x = (T)other.x; y = (T)other.y; return *this; }
 
     void print() const
     {

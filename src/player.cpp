@@ -13,7 +13,7 @@
 #include "vector.hpp"
 
 Player::Player(Window& window)
-    : Entity(window.loadImage(PLAYER_PATH), {0, 0}), dash(0), dashTimer(0)
+    : Entity(window.loadImage(PLAYER_PATH), {0, 0}), dash{0, 0}, dashTimer(0)
 {
 
 }
@@ -44,7 +44,7 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
     // Checking dash
     if (doublePress[SDLK_RIGHT] || doublePress[SDLK_LEFT] || doublePress[SDLK_UP])
     {
-        if (dashCooldown > 0)
+        if (dashCooldown == 0)
         {
             // Dashed
             if (doublePress[SDLK_RIGHT]) dash.x = 1;
@@ -61,7 +61,10 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
         if (--dashTimer <= 0)
             endDash(); // Dash completed
         else
-            velocity = {dashSpeed * dash.x, dashSpeed * dash.y}; // Dashing
+        {
+            velocity = {dash.x * dashSpeed.x, dash.y * dashSpeed.y}; // Dashing
+            velocity.print();
+        }
     }
 
     if (dashCooldown > 0) --dashCooldown;
@@ -74,8 +77,11 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
         velocity.y = bounceVel; // bounce
 
     else if (collisions.y == -1)
-        // Collided with a platform above
-        velocity.y = 0;
+    {
+        // Collided with a platform above while not dashing
+        if (dash.y == 0)
+            velocity.y = 0;
+    }
 }
 
 void Player::endDash()
