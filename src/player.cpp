@@ -43,21 +43,26 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
     // Checking dash
     if (doublePress[SDLK_RIGHT] || doublePress[SDLK_LEFT])
     {
-        // Dashed
-        if (doublePress[SDLK_RIGHT]) dash = 1;
-        else dash = -1;
-        
-        dashTimer = dashDuration;
+        if (dashCooldown > 0)
+        {
+            // Dashed
+            if (doublePress[SDLK_RIGHT]) dash = 1;
+            else dash = -1;
+            
+            dashTimer = dashDuration;
+        }
     }
 
     // Updating dash timer
     if (dashTimer > 0)
     {
         if (--dashTimer <= 0)
-            dash = 0; // Dash completed
+            endDash(); // Dash completed
         else
             velocity = {dashSpeed * dash, 0}; // Dashing left/right, zero y vel
     }
+
+    if (dashCooldown > 0) --dashCooldown;
 
     // Applying velocity
     Vect<int> collisions = moveCheck(world);
@@ -69,6 +74,12 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, std::unordered_
     else if (collisions.y == -1)
         // Collided with a platform above
         velocity.y = 0;
+}
+
+void Player::endDash()
+{
+    dash = 0;
+    dashCooldown = dashCooldownDur;
 }
 
 Vect<int> Player::moveCheck(World& world)
@@ -107,12 +118,12 @@ Vect<int> Player::moveCheck(World& world)
         if (pos.x < 0) 
         {
             pos.x = 0;
-            dash = 0;
+            endDash()
         }
         else if (pos.x > WINDOW_WIDTH - frame.w)
         { 
             pos.x = WINDOW_WIDTH - frame.w;
-            dash = 0;
+            endDash();
         }
     }
 
