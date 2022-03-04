@@ -42,14 +42,17 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, SDL_Keycode dou
     velocity.y += gravity; // Applying gravity
 
     // Checking dash
-    if (doublePress == SDLK_RIGHT || doublePress == SDLK_LEFT || doublePress == SDLK_UP)
+    if (doublePress == SDLK_RIGHT || doublePress == SDLK_LEFT || doublePress == SDLK_DOWN || doublePress == SDLK_UP)
     {
         if (dashCooldown == 0)
         {
             // Dashed
-            if (doublePress == SDLK_RIGHT) dash.x = 1;
-            else if (doublePress == SDLK_LEFT) dash.x = -1;
-            else dash.y = -1;
+            dash.x = (doublePress == SDLK_RIGHT) - (doublePress == SDLK_LEFT);
+            dash.y = (doublePress == SDLK_DOWN) - (doublePress == SDLK_UP);
+            
+            // if (doublePress == SDLK_RIGHT) dash.x = 1;
+            // else if (doublePress == SDLK_LEFT) dash.x = -1;
+            // else dash.y = -1;
             
             dashTimer = dashDuration;
             dashCooldown = dashCooldownDur;
