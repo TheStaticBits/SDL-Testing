@@ -28,8 +28,8 @@ void World::destroy()
 
 void World::render(Window& window, const Vect<int>& offset)
 {
-    for (Entity& entity : platforms)
-        entity.render(window, offset);
+    for (std::vector<Entity, PlatformType>% plat : platforms)
+        plat[0].render(window, offset);
 
     for (Particle& particle : particles)
         particle.render(window, offset);
@@ -80,7 +80,24 @@ void World::genLayer()
     const int layersY = layerStartY + (layer++ * platformSize.y);
 
     for (int l = 0, limit = WINDOW_WIDTH / platformSize.x + additional; l < limit; l++)
-        platforms.push_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
+    {
+        PlatformType typeChosen;
+        int random = rand() % 100;
+
+        // Iterates through and chooses the platform from the random number
+        for (const auto& platType : platChances)
+        {
+            if (random < platType.second)
+            {
+                typeChosen = platType.first;
+                break;
+            }
+            else
+                random -= platType.second;
+        }
+        
+        platforms.append({Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }), typeChosen});
+    }
 }
 
 void World::removePlatform(const int index, const float partSpeed)

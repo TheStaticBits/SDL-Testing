@@ -107,12 +107,12 @@ Vect<int> Player::moveCheck(World& world)
             {
                 if (velocity.x < 0) // Left
                 {
-                    pos.x = world.getPlatforms()[collided].getPos().x + world.getPlatforms()[collided].getFrame().w;
+                    pos.x = world.getPlatformAt(collided)[0].getX() + world.getPlatformAt(collided)[0].getFrame().w;
                     collisions.x = -1;
                 }
                 else if (velocity.x > 0) // Right
                 {
-                    pos.x = world.getPlatforms()[collided].getPos().x - frame.w;
+                    pos.x = world.getPlatformAt(collided)[0].getX() - frame.w;
                     collisions.x = 1;
                 }
             }
@@ -146,12 +146,12 @@ Vect<int> Player::moveCheck(World& world)
             {
                 if (velocity.y < 0) // Upward
                 {
-                    pos.y = world.getPlatforms()[collided].getPos().y + world.getPlatforms()[collided].getFrame().h;
+                    pos.y = world.getPlatformAt(collided)[0].getY() + world.getPlatformAt(collided)[0].getFrame().h;
                     collisions.y = -1;
                 }
                 else // Downward
                 {
-                    pos.y = world.getPlatforms()[collided].getPos().y - frame.h;
+                    pos.y = world.getPlatformAt(collided)[0].getY() - frame.h;
                     collisions.y = 1;
                     world.removePlatform(collided, std::abs(velocity.y));
                 }
@@ -164,10 +164,10 @@ Vect<int> Player::moveCheck(World& world)
     return collisions;
 }
 
-int Player::checkAll(std::vector<Entity>& platforms)
+int Player::checkAll(std::vector<std::vector<Entity, PlatformType>>& platforms)
 {
     for (int i = 0, size = platforms.size(); i < size; i++)
-        if (util::collide(*this, platforms[i]))
+        if (util::collide(*this, platforms[i][0]))
             return i;
     
     return -1;

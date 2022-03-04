@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-template <typename T>
+template<typename T>
 struct Vect
 {
     T x, y;

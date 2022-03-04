@@ -4,11 +4,16 @@
 #include <SDL2/SDL_image.h>
 
 #include <iostream>
+#include <unordered_map>
+#include <string>
 #include <vector>
 
 #include "entity.hpp"
 #include "window.hpp"
 #include "particle.hpp"
+
+// Possible types of platforms
+enum PlatformType { Default, OnlyDash, Undashable }
 
 class World 
 {
@@ -26,13 +31,17 @@ public:
 
     inline Vect<int> getShake() const { return shake; }
 
-    inline std::vector<Entity>& getPlatforms() { return platforms; }
+    inline std::vector<std::vector<Entity, PlatformType>>& getPlatforms() { return platforms; }
+    inline std::vector<Entity, PlatformType>& getPlatformAt(int index) { return platforms[index]; }
 
 private:
     static constexpr unsigned int layerStartY = 100;
+    static const std::unordered_map<PlatformType, int> platChances = ({{Default,    70},
+                                                                       {OnlyDash,   15},
+                                                                       {Undashable, 15}});
 
     SDL_Texture* platformTex;
-    std::vector<Entity> platforms;
+    std::vector<std::vector<Entity, PlatformType>> platforms;
 
     const Vect<int> platformSize;
 
