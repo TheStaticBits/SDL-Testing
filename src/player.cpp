@@ -103,7 +103,9 @@ Vect<int> Player::moveCheck(World& world)
 
         if (collided != -1)
         {
-            if (dash.x == 0)
+            const PlatformType platType = world.getPlatformAt(collided)[1];
+
+            if ((dash.x == 0 && platType != OnlyDash) || platType == Undashable)
             {
                 if (velocity.x < 0) // Left
                 {
@@ -116,8 +118,9 @@ Vect<int> Player::moveCheck(World& world)
                     collisions.x = 1;
                 }
             }
-            else 
-                world.removePlatform(collided, std::abs(velocity.x)); // Dashing
+            else
+                // Dashing
+                world.removePlatform(collided, std::abs(velocity.x));
         }
 
         // Testing if the player is off the screen on either side
@@ -142,7 +145,9 @@ Vect<int> Player::moveCheck(World& world)
 
         if (collided != -1)
         {
-            if (dash.y == 0)
+            const PlatformType platType = world.getPlatformAt(collided)[1];
+
+            if ((dash.y == 0 && platType != OnlyDash) || platType == Undashable)
             {
                 if (velocity.y < 0) // Upward
                 {
