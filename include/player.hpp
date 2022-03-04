@@ -19,7 +19,7 @@ class Player : public Entity
 public:
     Player(Window& window);
 
-    void update(std::unordered_map<SDL_Keycode, bool>& keys, SDL_Keycode doublePress, World& world);
+    void update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keycode doublePress, World& world);
 
 private:
     static constexpr float gravity = 0.2f;

@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 
 #include <iostream>
+#include <cmath>
 #include <unordered_map>
 #include <vector>
 
@@ -18,7 +19,7 @@ Player::Player(Window& window)
 
 }
 
-void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, SDL_Keycode doublePress, World& world)
+void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keycode doublePress, World& world)
 {
     // Applying movement
     if (keys[SDLK_LEFT])
@@ -116,7 +117,7 @@ Vect<int> Player::moveCheck(World& world)
                 }
             }
             else 
-                world.removePlatform(collided); // Dashing
+                world.removePlatform(collided, std::abs(velocity.x)); // Dashing
         }
 
         // Testing if the player is off the screen on either side
@@ -152,11 +153,11 @@ Vect<int> Player::moveCheck(World& world)
                 {
                     pos.y = world.getPlatforms()[collided].getPos().y - frame.h;
                     collisions.y = 1;
-                    world.removePlatform(collided);
+                    world.removePlatform(collided, std::abs(velocity.y));
                 }
             }
             else
-                world.removePlatform(collided); // Dashed up
+                world.removePlatform(collided, std::abs(velocity.y)); // Dashed up
         }
     }
 

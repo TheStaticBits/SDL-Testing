@@ -83,7 +83,7 @@ void World::genLayer()
         platforms.push_back(Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }));
 }
 
-void World::removePlatform(const int index)
+void World::removePlatform(const int index, const float partSpeed)
 {
     Vect<float> platCenter;
     platCenter.x = (float)(platforms[index].getX() + platformSize.x / 2);
@@ -91,7 +91,7 @@ void World::removePlatform(const int index)
 
     // Creating particles
     for (int i = 0; i < 360; i += 5)
-        particles.push_back(Particle(platformTex, platCenter, 0.3f, 10, 20, 4.0f, i));
+        particles.push_back(Particle(platformTex, platCenter, 0.3f, 10, 20, speed, i));
 
     // Removing
     platforms.erase(platforms.begin() + index);
