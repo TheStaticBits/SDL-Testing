@@ -13,7 +13,7 @@
 #include "particle.hpp"
 
 // Possible types of platforms
-enum PlatformType { Default, OnlyDash, Undashable }
+enum PlatformType { Default, OnlyDash, Undashable };
 
 class World 
 {
@@ -31,19 +31,19 @@ public:
 
     inline Vect<int> getShake() const { return shake; }
 
-    inline std::vector<std::vector<Entity, PlatformType>>& getPlatforms() { return platforms; }
-    inline std::vector<Entity, PlatformType>& getPlatformAt(int index) { return platforms[index]; }
+    inline std::vector<std::pair<Entity, PlatformType>>& getPlatforms() { return platforms; }
+    inline std::pair<Entity, PlatformType>& getPlatformAt(int index) { return platforms[index]; }
 
 private:
     static constexpr unsigned int layerStartY = 100;
-    static const std::unordered_map<PlatformType, int> platChances = ({{Default,    70},
-                                                                       {OnlyDash,   15},
-                                                                       {Undashable, 15}});
+    static std::unordered_map<PlatformType, int> platChances;
+    static std::unordered_map<PlatformType, std::string> platPaths;
+    static constexpr float partSpeedMult = 2.1f;
 
-    SDL_Texture* platformTex;
-    std::vector<std::vector<Entity, PlatformType>> platforms;
+    std::unordered_map<PlatformType, SDL_Texture*> platTextures;
+    std::vector<std::pair<Entity, PlatformType>> platforms;
 
-    const Vect<int> platformSize;
+    Vect<int> platformSize;
 
     std::vector<Particle> particles;
 

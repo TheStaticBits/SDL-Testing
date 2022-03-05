@@ -5,6 +5,8 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
+#include <cmath>
 
 #include "entity.hpp"
 #include "window.hpp"
@@ -12,15 +14,27 @@
 #include "utility.hpp"
 #include "particle.hpp"
 
-World::World(Window& window)
-    : platformTex(window.loadImage(PLATFORM_PATH)), platformSize(util::getImgSize(platformTex))
-{
+std::unordered_map<PlatformType, int> World::platChances = {{Default,    70}, 
+                                                            {OnlyDash,   15}, 
+                                                            {Undashable, 15}};
 
+std::unordered_map<PlatformType, std::string> World::platPaths = {{Default,    "res/plats/norm.png"}, 
+                                                                  {OnlyDash,   "res/plats/dash.png"}, 
+                                                                  {Undashable, "res/plats/udash.png"}};
+
+World::World(Window& window)
+{
+    // Load platform textures
+    for (const auto& platformPair : platPaths)
+        platTextures[platformPair.first] = window.loadImage(platformPair.second.c_str());
+    
+    platformSize = util::getImgSize(platTextures[Default]);
 }
 
 void World::destroy()
 {
-    SDL_DestroyTexture(platformTex);
+    for (const auto& tex : platTextures)
+        SDL_DestroyTexture(tex.second);
 
     platforms.clear();
     particles.clear();
@@ -28,8 +42,8 @@ void World::destroy()
 
 void World::render(Window& window, const Vect<int>& offset)
 {
-    for (std::vector<Entity, PlatformType>% plat : platforms)
-        plat[0].render(window, offset);
+    for (std::pair<Entity, PlatformType>& plat : platforms)
+        plat.first.render(window, offset);
 
     for (Particle& particle : particles)
         particle.render(window, offset);
@@ -96,19 +110,21 @@ void World::genLayer()
                 random -= platType.second;
         }
         
-        platforms.append({Entity(platformTex, { (float)(l * platformSize.x - offset), (float)layersY }), typeChosen});
+        platforms.push_back({Entity(platTextures[typeChosen], { (float)(l * platformSize.x - offset), (float)layersY }), typeChosen});
     }
 }
 
-void World::removePlatform(const int index, const float partSpeed)
+void World::removePlatform(const int index, float partSpeed)
 {
+    partSpeed = std::sqrt(partSpeed) * partSpeedMult;
+
     Vect<float> platCenter;
-    platCenter.x = (float)(platforms[index].getX() + platformSize.x / 2);
-    platCenter.y = (float)(platforms[index].getY() + platformSize.y / 2);
+    platCenter.x = (float)(platforms[index].first.getX() + platformSize.x / 2);
+    platCenter.y = (float)(platforms[index].first.getY() + platformSize.y / 2);
 
     // Creating particles
     for (int i = 0; i < 360; i += 5)
-        particles.push_back(Particle(platformTex, platCenter, 0.3f, 10, 20, speed, i));
+        particles.push_back(Particle(platforms[index].first.getImg(), platCenter, 0.3f, 10, 20, partSpeed, i));
 
     // Removing
     platforms.erase(platforms.begin() + index);

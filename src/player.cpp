@@ -103,23 +103,22 @@ Vect<int> Player::moveCheck(World& world)
 
         if (collided != -1)
         {
-            const PlatformType platType = world.getPlatformAt(collided)[1];
+            const PlatformType platType = world.getPlatformAt(collided).second;
 
-            if ((dash.x == 0 && platType != OnlyDash) || platType == Undashable)
+            if (dash.x == 0 || (dash.x != 0 && platType == Undashable))
             {
                 if (velocity.x < 0) // Left
                 {
-                    pos.x = world.getPlatformAt(collided)[0].getX() + world.getPlatformAt(collided)[0].getFrame().w;
+                    pos.x = world.getPlatformAt(collided).first.getX() + world.getPlatformAt(collided).first.getFrame().w;
                     collisions.x = -1;
                 }
                 else if (velocity.x > 0) // Right
                 {
-                    pos.x = world.getPlatformAt(collided)[0].getX() - frame.w;
+                    pos.x = world.getPlatformAt(collided).first.getX() - frame.w;
                     collisions.x = 1;
                 }
             }
             else
-                // Dashing
                 world.removePlatform(collided, std::abs(velocity.x));
         }
 
@@ -145,34 +144,38 @@ Vect<int> Player::moveCheck(World& world)
 
         if (collided != -1)
         {
-            const PlatformType platType = world.getPlatformAt(collided)[1];
+            const PlatformType platType = world.getPlatformAt(collided).second;
 
-            if ((dash.y == 0 && platType != OnlyDash) || platType == Undashable)
+            if (dash.y == 0 || (dash.y != 0 && platType == Undashable))
             {
                 if (velocity.y < 0) // Upward
                 {
-                    pos.y = world.getPlatformAt(collided)[0].getY() + world.getPlatformAt(collided)[0].getFrame().h;
+                    pos.y = world.getPlatformAt(collided).first.getY() + world.getPlatformAt(collided).first.getFrame().h;
                     collisions.y = -1;
                 }
                 else // Downward
                 {
-                    pos.y = world.getPlatformAt(collided)[0].getY() - frame.h;
+                    pos.y = world.getPlatformAt(collided).first.getY() - frame.h;
                     collisions.y = 1;
-                    world.removePlatform(collided, std::abs(velocity.y));
+
+                    if (platType != OnlyDash)
+                        world.removePlatform(collided, std::abs(velocity.y));
                 }
             }
+            else if (platType == Undashable)
+                collisions.y = velocity.y < 0 ? -1 : 1;
             else
-                world.removePlatform(collided, std::abs(velocity.y)); // Dashed up
+                world.removePlatform(collided, std::abs(velocity.y));
         }
     }
 
     return collisions;
 }
 
-int Player::checkAll(std::vector<std::vector<Entity, PlatformType>>& platforms)
+int Player::checkAll(std::vector<std::pair<Entity, PlatformType>>& platforms)
 {
     for (int i = 0, size = platforms.size(); i < size; i++)
-        if (util::collide(*this, platforms[i][0]))
+        if (util::collide(*this, platforms[i].first))
             return i;
     
     return -1;
