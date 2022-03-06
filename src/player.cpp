@@ -45,18 +45,14 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keyco
     // Checking dash
     if (doublePress == SDLK_RIGHT || doublePress == SDLK_LEFT || doublePress == SDLK_DOWN || doublePress == SDLK_UP)
     {
-        if (dashCooldown == 0)
+        if (canDash)
         {
             // Dashed
             dash.x = (doublePress == SDLK_RIGHT) - (doublePress == SDLK_LEFT);
             dash.y = (doublePress == SDLK_DOWN) - (doublePress == SDLK_UP);
             
-            // if (doublePress == SDLK_RIGHT) dash.x = 1;
-            // else if (doublePress == SDLK_LEFT) dash.x = -1;
-            // else dash.y = -1;
-            
             dashTimer = dashDuration;
-            dashCooldown = dashCooldownDur;
+            canDash = false;
         }
     }
 
@@ -66,20 +62,18 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keyco
         if (--dashTimer <= 0)
             dash = {0, 0}; // Dash completed
         else
-        {
-            velocity = {dash.x * dashSpeed.x, dash.y * dashSpeed.y}; // Dashing 
-        }
+            velocity = {dash.x * dashSpeed.x, dash.y * dashSpeed.y}; // Dashing
     }
-
-    if (dashCooldown > 0) --dashCooldown;
 
     // Applying velocity
     Vect<int> collisions = moveCheck(world);
 
     // Collided with a platform below
     if (collisions.y == 1)
+    {
         velocity.y = bounceVel; // bounce
-
+        canDash = true;
+    }
     else if (collisions.y == -1)
     {
         // Collided with a platform above while not dashing
