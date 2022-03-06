@@ -52,6 +52,7 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keyco
             dash.y = (doublePress == SDLK_DOWN) - (doublePress == SDLK_UP);
             
             dashTimer = dashDuration;
+            dashCooldown = dashCooldownDur;
             canDash = false;
         }
     }
@@ -65,6 +66,8 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keyco
             velocity = {dash.x * dashSpeed.x, dash.y * dashSpeed.y}; // Dashing
     }
 
+    if (dashCooldown > 0) --dashCooldown;
+
     // Applying velocity
     Vect<int> collisions = moveCheck(world);
 
@@ -72,7 +75,9 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keyco
     if (collisions.y == 1)
     {
         velocity.y = bounceVel; // bounce
-        canDash = true;
+        
+        if (dashCooldown == 0)
+            canDash = true;
     }
     else if (collisions.y == -1)
     {

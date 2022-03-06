@@ -18,10 +18,7 @@ World::World(Window& window)
 {
     // Load platform textures
     for (const auto& platformPair : platPaths)
-    {
-        std::cout << platformPair.first << " " << platformPair.second << " " << platformPair.second.c_str() << std::endl;
         platTextures[platformPair.first] = window.loadImage(platformPair.second.c_str());
-    }
     
     platformSize = util::getImgSize(platTextures[Default]);
 }
