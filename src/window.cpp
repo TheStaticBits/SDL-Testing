@@ -65,6 +65,8 @@ SDL_Texture* Window::loadImage(const char* path)
 
     if (texture == NULL)
         error("load texture at " + std::string(path));
+    else
+        std::cout << "SUCCESS loading texture at " << path << std::endl;
     
     return texture;
 }

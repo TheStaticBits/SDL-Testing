@@ -36,9 +36,15 @@ public:
 
 private:
     static constexpr unsigned int layerStartY = 100;
-    static std::unordered_map<PlatformType, int> platChances;
-    static std::unordered_map<PlatformType, std::string> platPaths;
     static constexpr float partSpeedMult = 2.1f;
+    const std::unordered_map<PlatformType, int> platChances = 
+        {{Default,    70}, 
+         {OnlyDash,   15}, 
+         {Undashable, 15}};
+    const std::unordered_map<PlatformType, std::string> platPaths = 
+        {{Default,    "res/plats/norm.png" }, 
+         {OnlyDash,   "res/plats/dash.png" }, 
+         {Undashable, "res/plats/udash.png"}};
 
     std::unordered_map<PlatformType, SDL_Texture*> platTextures;
     std::vector<std::pair<Entity, PlatformType>> platforms;

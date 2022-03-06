@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "shell",
+			"type": "cppbuild",
 			"label": "C++: Build (Debug)",
 			"command": "C:\\msys64\\mingw64\\bin\\g++.exe",
 			"args": [
@@ -48,7 +48,7 @@
 			}
 		},
 		{
-			"type": "shell",
+			"type": "cppbuild",
 			"label": "C++: Build (Release)",
 			"command": "C:\\msys64\\mingw64\\bin\\g++.exe",
 			"args": [
@@ -92,7 +92,7 @@
 			"group": "build"
 		},
 		{
-			"type": "shell",
+			"type": "cppbuild",
 			"label": "C++ - JS: Build (Debug)",
 			"command": "em++",
 			"args": [
@@ -126,7 +126,7 @@
 			"detail": "Builds C++ project to JS"
 		},
 		{
-			"type": "shell",
+			"type": "cppbuild",
 			"label": "C++ - JS: Build (Release)",
 			"command": "em++",
 			"args": [

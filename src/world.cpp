@@ -14,19 +14,14 @@
 #include "utility.hpp"
 #include "particle.hpp"
 
-std::unordered_map<PlatformType, int> World::platChances = {{Default,    70}, 
-                                                            {OnlyDash,   15}, 
-                                                            {Undashable, 15}};
-
-std::unordered_map<PlatformType, std::string> World::platPaths = {{Default,    "res/plats/norm.png"}, 
-                                                                  {OnlyDash,   "res/plats/dash.png"}, 
-                                                                  {Undashable, "res/plats/udash.png"}};
-
 World::World(Window& window)
 {
     // Load platform textures
     for (const auto& platformPair : platPaths)
+    {
+        std::cout << platformPair.first << " " << platformPair.second << " " << platformPair.second.c_str() << std::endl;
         platTextures[platformPair.first] = window.loadImage(platformPair.second.c_str());
+    }
     
     platformSize = util::getImgSize(platTextures[Default]);
 }
