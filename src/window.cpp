@@ -16,8 +16,11 @@ Window::Window(const char* title)
 {
     // For Emscripten
     // SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
-
+#ifndef __EMSCRIPTEN__ 
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, AWINDOW_WIDTH, AWINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+#else
+    window = SDL_CreateWindow("SDL_testing | StaticBits", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, AWINDOW_WIDTH, AWINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+#endif
 
     if (window == NULL)
         error("initialize window");
