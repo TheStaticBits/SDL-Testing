@@ -27,6 +27,7 @@ private:
     static constexpr float maxSpeed = 3.0f;
     static constexpr float bounceVel = -5.0f;
     
+    static constexpr float dashEnergy = 5.0f;
     static constexpr int dashDuration = 12;
     static constexpr int dashCooldownDur = 24;
     const Vect<float> dashSpeed = {8.0f, 5.0f};

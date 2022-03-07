@@ -15,12 +15,16 @@
 #include "particle.hpp"
 
 World::World(Window& window)
+    : energy(100.0f), displayEnergy(100.0f)
 {
     // Load platform textures
     for (const auto& platformPair : platPaths)
         platTextures[platformPair.first] = window.loadImage(platformPair.second.c_str());
     
     platformSize = util::getImgSize(platTextures[Default]);
+
+    energyBar = window.loadImage(BAR_PATH);
+    barSize = util::getImgSize(energyBar);
 }
 
 void World::destroy()
@@ -39,6 +43,12 @@ void World::render(Window& window, const Vect<int>& offset)
 
     for (Particle& particle : particles)
         particle.render(window, offset);
+
+    SDL_Rect barRect = {BAR_X, BAR_Y, (int)round(displayEnergy * (barSize.x / maxEnergy)), barSize.y};
+    window.drawRect(barRect, BAR_COLOR);
+
+    barRect.w = barSize.x;
+    window.render(energyBar, barRect);
 }
 
 void World::update(const int yOffset)
@@ -71,6 +81,17 @@ void World::update(const int yOffset)
     } 
     else 
         shake = {0, 0};
+    
+    // Updating energy bar
+    energy -= energyDepletion;
+
+    energy = util::lock(energy, 0.0f, maxEnergy);
+
+    // Moving display energy towards actual energy
+    if (energy > displayEnergy)
+        displayEnergy += (energy - displayEnergy) / 20;
+    else if (energy < displayEnergy)
+        displayEnergy -= (displayEnergy - energy) / 20;
 }
 
 void World::genLayers(const int amount)
@@ -120,6 +141,9 @@ void World::removePlatform(const int index, float partSpeed)
 
     // Removing
     platforms.erase(platforms.begin() + index);
+
+    // Adding energy for the platform
+    energy += energyGain.at(platforms[index].second);
 
     // Shaking
     shakeTimer = 10;

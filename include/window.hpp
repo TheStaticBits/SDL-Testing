@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 
 #include <iostream>
+#include <vector>
 #include <string>
 
 #include "vector.hpp"
@@ -21,7 +22,7 @@ public:
     SDL_Texture* loadImage(const char* path);
     void render(SDL_Texture* image, SDL_Rect& dest);
     void render(SDL_Texture* image, SDL_Rect& src, SDL_Rect& dest);
-    void drawRect(SDL_Rect& action);
+    void drawRect(SDL_Rect& rect, std::vector<Uint8> color);
 
     void drawTexOnTex(SDL_Texture* image, SDL_Texture* drawOn, const Vect<float>& renderPos);
 

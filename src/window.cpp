@@ -81,10 +81,17 @@ void Window::render(SDL_Texture* image, SDL_Rect& src, SDL_Rect& dest)
         error("render texture with source");
 }
 
-void Window::drawRect(SDL_Rect& rect)
+void Window::drawRect(SDL_Rect& rect, std::vector<Uint8> color)
 {
-    if (SDL_RenderDrawRect(renderer, &rect) != 0)
+    if (color.size() == 4)
+        SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], color[3]);
+    else
+        SDL_SetRenderDrawColor(renderer, color[0], color[1], color[2], 255);
+
+    if (SDL_RenderFillRect(renderer, &rect) != 0)
         error("draw rect");
+    
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
 void Window::drawTexOnTex(SDL_Texture* image, SDL_Texture* drawOn, const Vect<float>& renderPos)

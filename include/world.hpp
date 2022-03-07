@@ -33,6 +33,9 @@ public:
 
     inline std::vector<std::pair<Entity, PlatformType>>& getPlatforms() { return platforms; }
     inline std::pair<Entity, PlatformType>& getPlatformAt(int index) { return platforms[index]; }
+    
+    inline void addEnergy(const float num) { energy += num; }
+    inline void removeEnergy(const float num) { energy -= num; }
 
 private:
     static constexpr unsigned int layerStartY = 100;
@@ -46,12 +49,23 @@ private:
          {OnlyDash,   "res/plats/dash.png" }, 
          {Undashable, "res/plats/udash.png"}};
 
+    const std::unordered_map<PlatformType, int> energyGain = 
+        {{Default,    3}, 
+         {OnlyDash,   6}, 
+         {Undashable, 6}};
+
     std::unordered_map<PlatformType, SDL_Texture*> platTextures;
     std::vector<std::pair<Entity, PlatformType>> platforms;
-
     Vect<int> platformSize;
 
     std::vector<Particle> particles;
+
+    SDL_Texture* energyBar;
+    Vect<int> barSize;
+    float energy;
+    float displayEnergy;
+    static constexpr float maxEnergy = 100.0f;
+    static constexpr float energyDepletion = 0.075f;
 
     unsigned int layer = 0;
 

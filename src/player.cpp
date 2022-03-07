@@ -51,6 +51,10 @@ void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keyco
             dash.x = (doublePress == SDLK_RIGHT) - (doublePress == SDLK_LEFT);
             dash.y = (doublePress == SDLK_DOWN) - (doublePress == SDLK_UP);
             
+            // Removing energy
+            world.removeEnergy(dashEnergy);
+
+            // Setting timers
             dashTimer = dashDuration;
             dashCooldown = dashCooldownDur;
             canDash = false;
