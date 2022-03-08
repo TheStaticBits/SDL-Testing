@@ -65,7 +65,8 @@ private:
     float energy;
     float displayEnergy;
     static constexpr float maxEnergy = 100.0f;
-    static constexpr float energyDepletion = 0.075f;
+    static constexpr float energyDepletion = 0.1f;
+    static constexpr float layerAddition = 0.005f; // Added depletion rate per layer created
 
     unsigned int layer = 0;
 

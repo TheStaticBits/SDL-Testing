@@ -83,7 +83,7 @@ void World::update(const int yOffset)
         shake = {0, 0};
     
     // Updating energy bar
-    energy -= energyDepletion;
+    energy -= energyDepletion + (layer * layerAddition);
 
     energy = util::lock(energy, 0.0f, maxEnergy);
 
