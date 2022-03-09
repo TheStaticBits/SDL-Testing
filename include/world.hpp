@@ -13,7 +13,7 @@
 #include "particle.hpp"
 
 // Possible types of platforms
-enum PlatformType { Default, OnlyDash, Undashable };
+enum PlatformType { Default, OnlyDash, Undashable, Exploder};
 
 class World 
 {
@@ -40,19 +40,28 @@ public:
 private:
     static constexpr unsigned int layerStartY = 100;
     static constexpr float partSpeedMult = 2.1f;
+
+    // Multiplies by the size of a platform at runtime and centers on the exploder brick
+    // This is only used at startup, see default constructor
+    const std::vector<Vect<float>> exploderCollide = {{0.2, 4.5}, {2.5, 0.2}};
+    std::vector<Vect<int>> explosionBoxes;
+    static constexpr float explosionPartSpeed = 4.0f;
+    // Platform constants
     const std::unordered_map<PlatformType, int> platChances = 
-        {{Default,    70}, 
-         {OnlyDash,   15}, 
-         {Undashable, 15}};
+        {{Default,    65},  // White
+         {OnlyDash,   20},  // Red 
+         {Undashable, 10},  // Blue
+         {Exploder,   5 }}; // Green
     const std::unordered_map<PlatformType, std::string> platPaths = 
         {{Default,    "res/plats/norm.png" }, 
          {OnlyDash,   "res/plats/dash.png" }, 
-         {Undashable, "res/plats/udash.png"}};
-
+         {Undashable, "res/plats/udash.png"},
+         {Exploder,   "res/plats/explode.png"}};
     const std::unordered_map<PlatformType, int> energyGain = 
         {{Default,    3}, 
          {OnlyDash,   6}, 
-         {Undashable, 6}};
+         {Undashable, 6},
+         {Exploder,  -6}};
 
     std::unordered_map<PlatformType, SDL_Texture*> platTextures;
     std::vector<std::pair<Entity, PlatformType>> platforms;
