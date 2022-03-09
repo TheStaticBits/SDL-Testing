@@ -25,6 +25,10 @@ World::World(Window& window)
 
     energyBar = window.loadImage(BAR_PATH);
     barSize = util::getImgSize(energyBar);
+
+    // Initializing exploder boxes
+    for (Vect<float>& percents : exploderCollide)
+        explosionBoxes.push_back({(int)round(percents.x), (int)round(percents.y)});
 }
 
 void World::destroy()
@@ -139,12 +143,30 @@ void World::removePlatform(const int index, float partSpeed)
     for (int i = 0; i < 360; i += 5)
         particles.push_back(Particle(platforms[index].first.getImg(), platCenter, 0.3f, 10, 20, partSpeed, i));
 
-    // Removing
-    platforms.erase(platforms.begin() + index);
-
     // Adding energy for the platform
     energy += energyGain.at(platforms[index].second);
-
     // Shaking
     shakeTimer = 10;
+
+    // Special bricks
+    if (platforms[index].second == Exploder)
+    {
+        SDL_Rect thisPlatform = {platforms[index].getX(), platforms[index].getY(), platformSize.x, platformSize.y}; 
+
+        for (Vect<int>& box : explosionBoxes)
+        {
+            // Centers the collide box on the 
+            SDL_Rect collide = {platCenter.x - (float)(box.x / 2), platCenter.y - (float)(box.y / 2), box.x, box.y};
+
+            // Checking explosion with all platforms and removing when applicable
+            // oh wow this could set off a chain reaction lol
+            for (int i = 0, size = platforms.size(); i < size; i++)
+                if (util::collide(thisPlatform, collide))
+                    removePlatform(i, explosionPartSpeed);
+            }
+        }
+    }
+
+    // Removing
+    platforms.erase(platforms.begin() + index);
 }
