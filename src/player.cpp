@@ -22,11 +22,9 @@ Player::Player(Window& window)
 void Player::update(std::unordered_map<SDL_Keycode, bool>& keys, const SDL_Keycode doublePress, World& world)
 {
     // Applying movement
-    if (keys[SDLK_LEFT])
-        velocity.x -= speed;
-    else if (keys[SDLK_RIGHT])
-        velocity.x += speed;
-    else
+    velocity.x += keys[SDLK_RIGHT] - keys[SDLK_LEFT];
+
+    if (!keys[SDLK_RIGHT] && !keys[SDLK_LEFT])
     {
         // Slowing down
         if (velocity.x > 0)
