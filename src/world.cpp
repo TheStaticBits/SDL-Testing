@@ -27,8 +27,9 @@ World::World(Window& window)
     barSize = util::getImgSize(energyBar);
 
     // Initializing exploder boxes
-    for (Vect<float>& percents : exploderCollide)
-        explosionBoxes.push_back({(int)round(percents.x), (int)round(percents.y)});
+    for (const Vect<float>& percents : exploderCollide)
+        explosionBoxes.push_back({(int)round(percents.x * platformSize.x), (int)round(percents.y * platformSize.y)});
+    // ^ I really need to add a constructor so I can easily multiply vectors with different types
 }
 
 void World::destroy()
@@ -151,22 +152,29 @@ void World::removePlatform(const int index, float partSpeed)
     // Special bricks
     if (platforms[index].second == Exploder)
     {
-        SDL_Rect thisPlatform = {platforms[index].getX(), platforms[index].getY(), platformSize.x, platformSize.y}; 
-
-        for (Vect<int>& box : explosionBoxes)
+        for (int box = 0, size = explosionBoxes.size(); box < size; box++)
         {
-            // Centers the collide box on the 
-            SDL_Rect collide = {platCenter.x - (float)(box.x / 2), platCenter.y - (float)(box.y / 2), box.x, box.y};
+            // Centers the collide box on the brick
+            SDL_Rect collide = {(int)(platCenter.x - round(explosionBoxes[box].x / 2)), (int)(platCenter.y - round(explosionBoxes[box].y / 2)), explosionBoxes[box].x, explosionBoxes[box].y};
+
+            std::vector<int> remove;
 
             // Checking explosion with all platforms and removing when applicable
             // oh wow this could set off a chain reaction lol
             for (int i = 0, size = platforms.size(); i < size; i++)
-                if (util::collide(thisPlatform, collide))
-                    removePlatform(i, explosionPartSpeed);
-            }
+                if (util::collide(platforms[i].first.getRect(), collide))
+                    remove.push_back(i);
+            
+            // Removing platforms
+            for (int i = 0, size = remove.size(); i < size; i++)
+                removePlatform(remove[i] - i, explosionPartSpeed);
+
+            std::cout << box << std::endl;
+
+            box = 1;
         }
     }
-
-    // Removing
-    platforms.erase(platforms.begin() + index);
+    else
+        // Removing
+        platforms.erase(platforms.begin() + index);
 }

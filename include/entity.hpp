@@ -24,6 +24,15 @@ public:
 
     inline SDL_Rect& getFrame() { return frame; }
     inline SDL_Rect getFrameCopy() const { return frame; }
+    inline SDL_Rect getRect()
+    {
+        SDL_Rect result = frame;
+        result.x = pos.x;
+        result.y = pos.y;
+
+        return result;
+    }
+    
     inline int getWidth() const { return frame.w; }
     inline int getHeight() const { return frame.h; }
 
