@@ -132,7 +132,7 @@ void World::genLayer()
     }
 }
 
-void World::removePlatform(const int index, float partSpeed)
+void World::removePlatform(const int index, float partSpeed, const bool explode2nd)
 {
     partSpeed = std::sqrt(partSpeed) * partSpeedMult;
 
@@ -182,7 +182,16 @@ void World::removePlatform(const int index, float partSpeed)
             
             // Removing platforms
             for (int i = 0, size = remove.size(); i < size; i++)
-                removePlatform(remove[i] - i, explosionPartSpeed);
+            {
+                const bool secondExplode = platforms[remove[i]].second == Exploder;
+                
+                if (secondExplode)
+                    std::cout << "boi" << std::endl;
+
+                // Preventing infinite recursion with two exploder blocks
+                if (!secondExplode || !explode2nd)
+                    removePlatform(remove[i] - i, explosionPartSpeed, secondExplode);
+            }
         }
     }
     

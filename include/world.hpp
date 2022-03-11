@@ -27,7 +27,7 @@ public:
     void genLayers(const int amount);
     void genLayer();
 
-    void removePlatform(const int index, const float partSpeed);
+    void removePlatform(const int index, const float partSpeed, const bool explode2nd=false);
 
     inline Vect<int> getShake() const { return shake; }
 
