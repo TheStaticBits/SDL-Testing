@@ -152,10 +152,10 @@ void World::removePlatform(const int index, float partSpeed)
     // Special bricks
     if (platforms[index].second == Exploder)
     {
-        for (int box = 0, size = explosionBoxes.size(); box < size; box++)
+        for (Vect<int>& box : explosionBoxes)
         {
             // Centers the collide box on the brick
-            SDL_Rect collide = {(int)(platCenter.x - round(explosionBoxes[box].x / 2)), (int)(platCenter.y - round(explosionBoxes[box].y / 2)), explosionBoxes[box].x, explosionBoxes[box].y};
+            SDL_Rect collide = {(int)(platCenter.x - round(box.x / 2)), (int)(platCenter.y - round(box.y / 2)), box.x, box.y};
 
             std::vector<int> remove;
 
@@ -163,18 +163,16 @@ void World::removePlatform(const int index, float partSpeed)
             // oh wow this could set off a chain reaction lol
             for (int i = 0, size = platforms.size(); i < size; i++)
                 if (util::collide(platforms[i].first.getRect(), collide))
-                    remove.push_back(i);
+                {
+                    if (platforms[i].second != Exploder)
+                        remove.push_back(i);
+                }
             
             // Removing platforms
             for (int i = 0, size = remove.size(); i < size; i++)
                 removePlatform(remove[i] - i, explosionPartSpeed);
-
-            std::cout << box << std::endl;
-
-            box = 1;
         }
     }
-    else
-        // Removing
-        platforms.erase(platforms.begin() + index);
+    
+    platforms.erase(platforms.begin() + index);
 }
