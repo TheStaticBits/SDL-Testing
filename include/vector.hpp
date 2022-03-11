@@ -15,6 +15,10 @@ struct Vect
     // Copy assignment operator
     Vect<T>& operator=(const Vect<T>& other) { x = (T)other.x; y = (T)other.y; return *this; }
 
+    // Other operators
+    bool operator!=(const Vect<T>& other) { return x != other.x || y != other.y; }
+    bool operator==(const Vect<T>& other) { return x == other.x && y == other.y; }
+
     void print() const
     {
         std::cout << "(" << x << ", " << y << ")" << std::endl;

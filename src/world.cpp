@@ -140,6 +140,8 @@ void World::removePlatform(const int index, float partSpeed)
     platCenter.x = (float)(platforms[index].first.getX() + platformSize.x / 2);
     platCenter.y = (float)(platforms[index].first.getY() + platformSize.y / 2);
 
+    Vect<float> platformPos = platforms[index].first.getPos();
+
     // Creating particles
     for (int i = 0; i < 360; i += 5)
         particles.push_back(Particle(platforms[index].first.getImg(), platCenter, 0.3f, 10, 20, partSpeed, i));
@@ -148,6 +150,8 @@ void World::removePlatform(const int index, float partSpeed)
     energy += energyGain.at(platforms[index].second);
     // Shaking
     shakeTimer = 10;
+
+    int totalRemoved = 0;
 
     // Special bricks
     if (platforms[index].second == Exploder)
@@ -158,14 +162,22 @@ void World::removePlatform(const int index, float partSpeed)
             SDL_Rect collide = {(int)(platCenter.x - round(box.x / 2)), (int)(platCenter.y - round(box.y / 2)), box.x, box.y};
 
             std::vector<int> remove;
+            bool beforePlatform = true;
 
             // Checking explosion with all platforms and removing when applicable
             // oh wow this could set off a chain reaction lol
             for (int i = 0, size = platforms.size(); i < size; i++)
                 if (util::collide(platforms[i].first.getRect(), collide))
                 {
-                    if (platforms[i].second != Exploder)
+                    if (platforms[i].first.getPos() == platformPos)
+                        beforePlatform = false;
+                    else
+                    {
                         remove.push_back(i);
+
+                        if (beforePlatform)
+                            totalRemoved += 1;
+                    }
                 }
             
             // Removing platforms
@@ -174,5 +186,5 @@ void World::removePlatform(const int index, float partSpeed)
         }
     }
     
-    platforms.erase(platforms.begin() + index);
+    platforms.erase(platforms.begin() + index - totalRemoved);
 }
