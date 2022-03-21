@@ -45,7 +45,8 @@ private:
     // This is only used at startup, see default constructor
     const std::vector<Vect<float>> exploderCollide = {{0.2, 4.5}, {2.5, 0.2}};
     std::vector<Vect<int>> explosionBoxes;
-    static constexpr float explosionPartSpeed = 4.0f;
+    static constexpr float explosionBrickPartSpeed = 4.0f;
+    static constexpr float exploderPartSpeed = 7.0f;
     // Platform constants
     const std::unordered_map<PlatformType, int> platChances = 
         {{Default,    65},  // White
@@ -81,4 +82,6 @@ private:
 
     unsigned int shakeTimer = 0; 
     Vect<int> shake = {0, 0};
+
+    int getPlatformIndex(Vect<float> pos);
 };

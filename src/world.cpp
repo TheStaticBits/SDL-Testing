@@ -134,7 +134,7 @@ void World::genLayer()
 
 void World::removePlatform(const int index, float partSpeed, const bool explode2nd)
 {
-    partSpeed = std::sqrt(partSpeed) * partSpeedMult;
+    partSpeed = (platforms[index].second == Exploder ? exploderPartSpeed : std::sqrt(partSpeed) * partSpeedMult);
 
     Vect<float> platCenter;
     platCenter.x = (float)(platforms[index].first.getX() + platformSize.x / 2);
@@ -161,7 +161,7 @@ void World::removePlatform(const int index, float partSpeed, const bool explode2
             // Centers the collide box on the brick
             SDL_Rect collide = {(int)(platCenter.x - round(box.x / 2)), (int)(platCenter.y - round(box.y / 2)), box.x, box.y};
 
-            std::vector<int> remove;
+            std::vector<Vect<float>> remove;
             bool beforePlatform = true;
 
             // Checking explosion with all platforms and removing when applicable
@@ -173,7 +173,7 @@ void World::removePlatform(const int index, float partSpeed, const bool explode2
                         beforePlatform = false;
                     else
                     {
-                        remove.push_back(i);
+                        remove.push_back(platforms[i].first.getPos());
 
                         if (beforePlatform)
                             totalRemoved += 1;
@@ -183,17 +183,29 @@ void World::removePlatform(const int index, float partSpeed, const bool explode2
             // Removing platforms
             for (int i = 0, size = remove.size(); i < size; i++)
             {
-                const bool secondExplode = platforms[remove[i]].second == Exploder;
-                
-                if (secondExplode)
-                    std::cout << "boi" << std::endl;
+                index = getPlatformIndex(remove[i]);
 
-                // Preventing infinite recursion with two exploder blocks
-                if (!secondExplode || !explode2nd)
-                    removePlatform(remove[i] - i, explosionPartSpeed, secondExplode);
+                if (index != -1)
+                {
+                    const bool secondExplode = platforms[index].second == Exploder;
+
+                    // Preventing infinite recursion with two exploder blocks
+                    if (!secondExplode || !explode2nd)
+                        removePlatform(index, explosionBrickPartSpeed, secondExplode);
+                }
             }
         }
     }
     
-    platforms.erase(platforms.begin() + index - totalRemoved);
+    platforms.erase(platforms.begin() + getPlatformIndex(platformPos));
+}
+
+int World::getPlatformIndex(Vect<float> pos)
+{
+    // Returns negative -1 when not found
+    for (int i, size = platforms.size(); i < size; i++)
+        if (pos == platforms[i].first.getPos())
+            return i;
+
+    return -1
 }
