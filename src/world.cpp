@@ -132,80 +132,76 @@ void World::genLayer()
     }
 }
 
-void World::removePlatform(const int index, float partSpeed, const bool explode2nd)
+void World::removePlatform(int index, float partSpeed, const bool explode2nd)
 {
-    partSpeed = (platforms[index].second == Exploder ? exploderPartSpeed : std::sqrt(partSpeed) * partSpeedMult);
+    Vect<float> platformPos = platforms[index].first.getPos();
 
+    // Getting the center of the platform for particles
     Vect<float> platCenter;
     platCenter.x = (float)(platforms[index].first.getX() + platformSize.x / 2);
     platCenter.y = (float)(platforms[index].first.getY() + platformSize.y / 2);
-
-    Vect<float> platformPos = platforms[index].first.getPos();
-
-    // Creating particles
-    for (int i = 0; i < 360; i += 5)
-        particles.push_back(Particle(platforms[index].first.getImg(), platCenter, 0.3f, 10, 20, partSpeed, i));
-
-    // Adding energy for the platform
-    energy += energyGain.at(platforms[index].second);
-    // Shaking
-    shakeTimer = 10;
-
-    int totalRemoved = 0;
+    
+    partSpeed = std::sqrt(partSpeed) * partSpeedMult;
+    Vect<int> partSize(10, 20); // Default particle size
 
     // Special bricks
-    if (platforms[index].second == Exploder)
+    if (platforms[index].second == Exploder) // Green brick
     {
+        partSize = explodeParticleSize; // Explosion particle size
+        partSpeed = explodeParticleSpeed; // Explosion particle speed
+
         for (Vect<int>& box : explosionBoxes)
         {
             // Centers the collide box on the brick
             SDL_Rect collide = {(int)(platCenter.x - round(box.x / 2)), (int)(platCenter.y - round(box.y / 2)), box.x, box.y};
 
             std::vector<Vect<float>> remove;
-            bool beforePlatform = true;
 
             // Checking explosion with all platforms and removing when applicable
             // oh wow this could set off a chain reaction lol
             for (int i = 0, size = platforms.size(); i < size; i++)
                 if (util::collide(platforms[i].first.getRect(), collide))
-                {
-                    if (platforms[i].first.getPos() == platformPos)
-                        beforePlatform = false;
-                    else
-                    {
+                    if (platforms[i].first.getPos() != platformPos)
                         remove.push_back(platforms[i].first.getPos());
-
-                        if (beforePlatform)
-                            totalRemoved += 1;
-                    }
-                }
             
             // Removing platforms
             for (int i = 0, size = remove.size(); i < size; i++)
             {
-                index = getPlatformIndex(remove[i]);
+                const int platIndex = getPlatformIndex(remove[i]);
 
-                if (index != -1)
+                if (platIndex != -1)
                 {
-                    const bool secondExplode = platforms[index].second == Exploder;
+                    const bool secondExplode = platforms[platIndex].second == Exploder;
 
-                    // Preventing infinite recursion with two exploder blocks
+                    // Preventing infinite recursion with two exploder blocks exploding each other
                     if (!secondExplode || !explode2nd)
-                        removePlatform(index, explosionBrickPartSpeed, secondExplode);
+                        removePlatform(platIndex, explosionBrickPartSpeed, secondExplode);
                 }
             }
         }
     }
+
+    index = getPlatformIndex(platformPos);
+
+    // Creating particles
+    for (int i = 0; i < 360; i += 5)
+        particles.push_back(Particle(platforms[index].first.getImg(), platCenter, 0.3f, partSize.x, partSize.y, partSpeed, i));
+
+    // Adding energy for the platform
+    energy += energyGain.at(platforms[index].second);
+    // Shaking
+    shakeTimer = 10;
     
-    platforms.erase(platforms.begin() + getPlatformIndex(platformPos));
+    // Removing platform
+    platforms.erase(platforms.begin() + index);
 }
 
 int World::getPlatformIndex(Vect<float> pos)
 {
     // Returns negative -1 when not found
-    for (int i, size = platforms.size(); i < size; i++)
+    for (int i = 0, size = platforms.size(); i < size; i++)
         if (pos == platforms[i].first.getPos())
             return i;
 
-    return -1
+    return -1;
 }

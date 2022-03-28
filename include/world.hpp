@@ -27,7 +27,7 @@ public:
     void genLayers(const int amount);
     void genLayer();
 
-    void removePlatform(const int index, const float partSpeed, const bool explode2nd=false);
+    void removePlatform(int index, const float partSpeed, const bool explode2nd=false);
 
     inline Vect<int> getShake() const { return shake; }
 
@@ -46,7 +46,8 @@ private:
     const std::vector<Vect<float>> exploderCollide = {{0.2, 4.5}, {2.5, 0.2}};
     std::vector<Vect<int>> explosionBoxes;
     static constexpr float explosionBrickPartSpeed = 4.0f;
-    static constexpr float exploderPartSpeed = 7.0f;
+    static constexpr float explodeParticleSpeed = 7.0f;
+    const Vect<int> explodeParticleSize = {15, 25};
     // Platform constants
     const std::unordered_map<PlatformType, int> platChances = 
         {{Default,    65},  // White
@@ -62,7 +63,7 @@ private:
         {{Default,    3}, 
          {OnlyDash,   6}, 
          {Undashable, 6},
-         {Exploder,  -6}};
+         {Exploder,  -3}};
 
     std::unordered_map<PlatformType, SDL_Texture*> platTextures;
     std::vector<std::pair<Entity, PlatformType>> platforms;
@@ -75,8 +76,8 @@ private:
     float energy;
     float displayEnergy;
     static constexpr float maxEnergy = 100.0f;
-    static constexpr float energyDepletion = 0.1f;
-    static constexpr float layerAddition = 0.005f; // Added depletion rate per layer created
+    static constexpr float energyDepletion = 0.05f;
+    static constexpr float layerAddition = 0.001f; // Added depletion rate per layer created
 
     unsigned int layer = 0;
 
