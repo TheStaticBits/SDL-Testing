@@ -15,7 +15,7 @@
 #include "particle.hpp"
 
 World::World(Window& window)
-    : energy(100.0f), displayEnergy(100.0f)
+    : energy(100.0f), displayEnergy(100.0f), font(window, FONT_DATA_PATH, FONT_IMG_PATH)
 {
     // Load platform textures
     for (const auto& platformPair : platPaths)
@@ -54,6 +54,8 @@ void World::render(Window& window, const Vect<int>& offset)
 
     barRect.w = barSize.x;
     window.render(energyBar, barRect);
+
+    font.render(window, {20, WINDOW_HEIGHT - 20}, "energy: " + std::to_string((int)round(displayEnergy)), 2);
 }
 
 void World::update(const int yOffset)

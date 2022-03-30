@@ -11,6 +11,7 @@
 #include "entity.hpp"
 #include "window.hpp"
 #include "particle.hpp"
+#include "font.hpp"
 
 // Possible types of platforms
 enum PlatformType { Default, OnlyDash, Undashable, Exploder};
@@ -85,4 +86,6 @@ private:
     Vect<int> shake = {0, 0};
 
     int getPlatformIndex(Vect<float> pos);
+
+    Font font;
 };

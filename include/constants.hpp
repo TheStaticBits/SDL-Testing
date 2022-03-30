@@ -11,6 +11,8 @@
 // Paths to images
 #define PLAYER_PATH "res/player.png"
 #define BAR_PATH "res/bar.png"
+#define FONT_DATA_PATH "res/font/xfont/font.json"
+#define FONT_IMG_PATH "res/font/xfont/font.png"
 
 // Bar constants
 #define BAR_X 15

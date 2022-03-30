@@ -1,0 +1,13 @@
+{
+    "dimensions": {
+        "width": 6,
+        "height": 8,
+        "offset": 1 
+    },
+    
+    "content": [
+        "abcdefghijklmnopqrstuvwxyz",
+        "0123456789",
+        "!?.,:;'\"\\/)(][}{><+-=`~@#$%^&*_|"
+    ]
+}

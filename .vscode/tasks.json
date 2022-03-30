@@ -17,6 +17,7 @@
 				"-lSDL2",
 				"-lSDL2_image",
 				"-Iinclude",
+				"-IC:\\JSON_Parse",
 				"-Wall"
 			],
 			"options": {
@@ -64,6 +65,7 @@
 				"-lSDL2",
 				"-lSDL2_image",
 				"-Iinclude",
+				"-IC:\\JSON_Parse",
 				"-Wall"
 			],
 			"options": {
@@ -114,6 +116,7 @@
 				"-o",
 				"bin\\web\\application.js",
 				"-Iinclude",
+				"-IC:\\JSON_Parse",
 				"-Wall"
 			],
 			"options": {
@@ -149,6 +152,7 @@
 				"-o",
 				"bin\\web\\application.js",
 				"-Iinclude",
+				"-IC:\\JSON_Parse",
 				"-Wall"
 			],
 			"options": {
