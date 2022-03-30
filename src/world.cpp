@@ -55,7 +55,7 @@ void World::render(Window& window, const Vect<int>& offset)
     barRect.w = barSize.x;
     window.render(energyBar, barRect);
 
-    font.render(window, {20, WINDOW_HEIGHT - 20}, "energy: " + std::to_string((int)round(displayEnergy)), 2);
+    // font.render(window, {20, WINDOW_HEIGHT - 20}, "energy: " + std::to_string((int)round(displayEnergy)));
 }
 
 void World::update(const int yOffset)
@@ -134,7 +134,7 @@ void World::genLayer()
     }
 }
 
-void World::removePlatform(int index, float partSpeed, const bool explode2nd)
+void World::removePlatform(int index, float partSpeed, std::vector<Vect<float>> greenAgainPos)
 {
     Vect<float> platformPos = platforms[index].first.getPos();
 
@@ -173,16 +173,23 @@ void World::removePlatform(int index, float partSpeed, const bool explode2nd)
 
                 if (platIndex != -1)
                 {
-                    const bool secondExplode = platforms[platIndex].second == Exploder;
+                    // Preventing infinite recursion with more than one exploder blocks exploding each other
 
-                    // Preventing infinite recursion with two exploder blocks exploding each other
-                    if (!secondExplode || !explode2nd)
-                        removePlatform(platIndex, explosionBrickPartSpeed, secondExplode);
+                    // Normal brick
+                    if (platforms[platIndex].second != Exploder)
+                        removePlatform(platIndex, explosionBrickPartSpeed);
+                    // If the brick has not already been exploded
+                    else if (std::find(greenAgainPos.begin(), greenAgainPos.end(), remove[i]) == greenAgainPos.end())
+                    {
+                        greenAgainPos.push_back(platformPos);
+                        removePlatform(platIndex, partSpeed, greenAgainPos);
+                    }  
                 }
             }
         }
     }
 
+    // Getting the index after any explosions
     index = getPlatformIndex(platformPos);
 
     // Creating particles

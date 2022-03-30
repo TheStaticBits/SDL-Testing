@@ -28,7 +28,7 @@ public:
     void genLayers(const int amount);
     void genLayer();
 
-    void removePlatform(int index, const float partSpeed, const bool explode2nd=false);
+    void removePlatform(int index, const float partSpeed, std::vector<Vect<float>> greenAgainPos={});
 
     inline Vect<int> getShake() const { return shake; }
 
