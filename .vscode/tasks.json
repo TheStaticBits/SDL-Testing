@@ -107,6 +107,7 @@
 				"src\\player.cpp",
 				"src\\window.cpp",
 				"src\\world.cpp",
+				"src\\font.cpp",
 				"-s", "WASM=1",
 				"-s", "USE_SDL=2",
 				"--preload-file", "res",
@@ -114,7 +115,7 @@
 				"-s", "SDL2_IMAGE_FORMATS='[\"png\"]'",
 				"-s", "ASYNCIFY=1",
 				"-o",
-				"bin\\web\\application.js",
+				"bin\\web\\game.html",
 				"-Iinclude",
 				"-IC:\\JSON_Parse",
 				"-Wall"
@@ -142,6 +143,7 @@
 				"src\\player.cpp",
 				"src\\window.cpp",
 				"src\\world.cpp",
+				"src\\font.cpp",
 				"-lSDL",
 				"-s", "USE_SDL=2",
 				"--preload-file", "res",
@@ -150,7 +152,7 @@
 				"-s", "SDL2_IMAGE_FORMATS='[\"png\"]'",
 				"-s", "ASYNCIFY=1",
 				"-o",
-				"bin\\web\\application.js",
+				"bin\\web\\game.html",
 				"-Iinclude",
 				"-IC:\\JSON_Parse",
 				"-Wall"
