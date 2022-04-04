@@ -43,7 +43,7 @@ void Font::render(Window& window, Vect<int> position, const std::string text, co
             // Finding character position in fontData
             Vect<int> charPos(0, 0);
             bool found = false;
-            for (const std::string& row : fontData["content"])
+            for (const std::string row : fontData["content"])
             {
                 for (const char& charInRow : row)
                 {
