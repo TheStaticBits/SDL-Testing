@@ -61,7 +61,7 @@ void World::render(Window& window, const Vect<int>& offset)
 void World::update(const int yOffset)
 {
     // Generating layers if needed
-    if (layerStartY + (layer * platformSize.y) + yOffset < WINDOW_HEIGHT)
+    if (layerStartY + ((layer - 1) * platformSize.y) + yOffset < WINDOW_HEIGHT)
         genLayer();
 
     // Updating particles
