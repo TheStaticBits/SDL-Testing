@@ -40,7 +40,7 @@ public:
 
 private:
     static constexpr unsigned int layerStartY = 100;
-    static constexpr float partSpeedMult = 2.1f;
+    static constexpr float partSpeedMult = 2.7f;
 
     // Multiplies by the size of a platform at runtime and centers on the exploder brick
     // This is only used at startup, see default constructor
@@ -65,6 +65,11 @@ private:
          {OnlyDash,   6}, 
          {Undashable, 6},
          {Exploder,  -3}};
+    const std::unordered_map<PlatformType, int> screenShake = 
+        {{Default,    17}, 
+         {OnlyDash,   27}, 
+         {Undashable, 27},
+         {Exploder,   15}};
 
     std::unordered_map<PlatformType, SDL_Texture*> platTextures;
     std::vector<std::pair<Entity, PlatformType>> platforms;
@@ -82,7 +87,7 @@ private:
 
     unsigned int layer = 0;
 
-    unsigned int shakeTimer = 0; 
+    unsigned int shakeStrength = 0; 
     Vect<int> shake = {0, 0};
 
     int getPlatformIndex(Vect<float> pos);

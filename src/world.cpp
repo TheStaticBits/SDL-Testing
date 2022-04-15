@@ -55,6 +55,11 @@ void World::render(Window& window, const Vect<int>& offset)
     barRect.w = barSize.x;
     window.render(energyBar, barRect);
 
+    // int width = 40;
+    // int height = 40;
+    // SDL_Rect box = {WINDOW_WIDTH - width, 0, width, height};
+    // window.drawRect(box, {0, 255, 0, 255});
+
     // font.render(window, {20, WINDOW_HEIGHT - 20}, "energy: " + std::to_string((int)round(displayEnergy)));
 }
 
@@ -76,18 +81,18 @@ void World::update(const int yOffset)
     }
 
     // Updating shake timer
-    if (shakeTimer > 0)
+    if (shakeStrength > 1)
     {
-        shakeTimer--;
-
-        if (shakeTimer % 2 == 0)
-        {
-            shake.x = (rand() % 9) - 4;
-            shake.y = (rand() % 9) - 4;
-        }
+        shake.x = (rand() % shakeStrength) - (int)floor(shakeStrength / 2);
+        shake.y = (rand() % shakeStrength) - (int)floor(shakeStrength / 2);
+        
+        shakeStrength -= 2;
     } 
     else 
+    {
         shake = {0, 0};
+        shakeStrength = 0;
+    }
     
     // Updating energy bar
     energy -= energyDepletion + (layer * layerAddition);
@@ -187,6 +192,9 @@ void World::removePlatform(int index, float partSpeed, std::vector<Vect<float>> 
                 }
             }
         }
+
+        // Normalizing screenshake
+        shakeStrength /= 2;
     }
 
     // Getting the index after any explosions
@@ -199,7 +207,7 @@ void World::removePlatform(int index, float partSpeed, std::vector<Vect<float>> 
     // Adding energy for the platform
     energy += energyGain.at(platforms[index].second);
     // Shaking
-    shakeTimer = 10;
+    shakeStrength += screenShake.at(platforms[index].second);
     
     // Removing platform
     platforms.erase(platforms.begin() + index);
