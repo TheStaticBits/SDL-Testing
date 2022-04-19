@@ -26,10 +26,11 @@ World::World(Window& window)
     energyBar = window.loadImage(BAR_PATH);
     barSize = util::getImgSize(energyBar);
 
-    // Initializing exploder boxes
-    for (const Vect<float>& percents : exploderCollide)
-        explosionBoxes.push_back({(int)round(percents.x * platformSize.x), (int)round(percents.y * platformSize.y)});
-    // ^ I really need to add a constructor so I can easily multiply vectors with different types
+    // Initializing exploder boxes with the percent of the brick sizes
+    for (const auto& explodePlats : exploderCollide)
+        for (const Vect<int>& percents : explodePlats.second)
+            explosionBoxes[explodePlats.first] = {(int)round(percents.x * platformSize.x), (int)round(percents.y * platformSize.y)};
+         // ^ I really need to add a constructor so I can easily multiply vectors with different types
 }
 
 void World::destroy()
@@ -124,15 +125,15 @@ void World::genLayer()
         int random = rand() % 100;
 
         // Iterates through and chooses the platform from the random number
-        for (const auto& platType : platChances)
+        for (const auto& platDat : platChances)
         {
-            if (random < platType.second)
+            if (random < platDat.second)
             {
-                typeChosen = platType.first;
+                typeChosen = platDat.first;
                 break;
             }
             else
-                random -= platType.second;
+                random -= platDat.second;
         }
         
         platforms.push_back({Entity(platTextures[typeChosen], { (float)(l * platformSize.x - offset), (float)layersY }), typeChosen});
@@ -152,12 +153,14 @@ void World::removePlatform(int index, float partSpeed, std::vector<Vect<float>> 
     Vect<int> partSize(10, 20); // Default particle size
 
     // Special bricks
-    if (platforms[index].second == Exploder) // Green brick
+    
+    // Exploder bricks
+    if (exploderCollide.find(platforms[index].second) != exploderCollide.end())
     {
         partSize = explodeParticleSize; // Explosion particle size
         partSpeed = explodeParticleSpeed; // Explosion particle speed
 
-        for (Vect<int>& box : explosionBoxes)
+        for (Vect<int>& box : explosionBoxes.at(platforms[index].second))
         {
             // Centers the collide box on the brick
             SDL_Rect collide = {(int)(platCenter.x - round(box.x / 2)), (int)(platCenter.y - round(box.y / 2)), box.x, box.y};
@@ -181,7 +184,7 @@ void World::removePlatform(int index, float partSpeed, std::vector<Vect<float>> 
                     // Preventing infinite recursion with more than one exploder blocks exploding each other
 
                     // Normal brick
-                    if (platforms[platIndex].second != Exploder)
+                    if (exploderCollide.find(platforms[platIndex].second) == exploderCollide.end())
                         removePlatform(platIndex, explosionBrickPartSpeed);
                     // If the brick has not already been exploded
                     else if (std::find(greenAgainPos.begin(), greenAgainPos.end(), remove[i]) == greenAgainPos.end())

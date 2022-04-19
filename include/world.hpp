@@ -14,7 +14,7 @@
 #include "font.hpp"
 
 // Possible types of platforms
-enum PlatformType { Default, OnlyDash, Undashable, Exploder};
+enum PlatformType { Default, OnlyDash, Undashable, Exploder, LineExp};
 
 class World 
 {
@@ -44,32 +44,38 @@ private:
 
     // Multiplies by the size of a platform at runtime and centers on the exploder brick
     // This is only used at startup, see default constructor
-    const std::vector<Vect<float>> exploderCollide = {{0.2, 4.5}, {2.5, 0.2}};
-    std::vector<Vect<int>> explosionBoxes;
+    const std::unordered_map<PlatformType, std::vector<Vect<float>>> exploderCollide = 
+        {{Exploder, {{0.2, 4.5}, {2.5, 0.2}}},
+         {LineExp,  {{8.5, 0.2}}}};
+    std::unordered_map<PlatformType, std::vector<Vect<int>>> explosionBoxes;
     static constexpr float explosionBrickPartSpeed = 4.0f;
     static constexpr float explodeParticleSpeed = 7.0f;
     const Vect<int> explodeParticleSize = {15, 25};
     // Platform constants
     const std::unordered_map<PlatformType, int> platChances = 
-        {{Default,    65},  // White
+        {{Default,    60},  // White
          {OnlyDash,   20},  // Red 
          {Undashable, 10},  // Blue
-         {Exploder,   5 }}; // Green
+         {Exploder,   5 },  // Green
+         {LineExp,    5 }}; // Purple
     const std::unordered_map<PlatformType, std::string> platPaths = 
         {{Default,    "res/plats/norm.png" }, 
          {OnlyDash,   "res/plats/dash.png" }, 
          {Undashable, "res/plats/udash.png"},
-         {Exploder,   "res/plats/explode.png"}};
+         {Exploder,   "res/plats/explode.png"},
+         {LineExp,    "res/plats/lineExp.png"}};
     const std::unordered_map<PlatformType, int> energyGain = 
         {{Default,    3}, 
          {OnlyDash,   6}, 
          {Undashable, 6},
-         {Exploder,  -3}};
+         {Exploder,   0},
+         {LineExp,    1}};
     const std::unordered_map<PlatformType, int> screenShake = 
         {{Default,    17}, 
          {OnlyDash,   27}, 
          {Undashable, 27},
-         {Exploder,   15}};
+         {Exploder,   15},
+         {LineExp,    17}};
 
     std::unordered_map<PlatformType, SDL_Texture*> platTextures;
     std::vector<std::pair<Entity, PlatformType>> platforms;
